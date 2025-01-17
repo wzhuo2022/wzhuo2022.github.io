@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="论文标题：Entropy-based Active Learning for Object Detection with Progressive Diversity Constraint 中文标题：具有渐进多样性约束的基于熵的主动学习目标检测 作者团队：State Key Laboratory of Software Development Environment, Beihang Univer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DivProto">
+<meta property="og:url" content="http://example.com/2025/01/17/DivProto/index.html">
+<meta property="og:site_name" content="wzhuo2022&#39;s blog">
+<meta property="og:description" content="论文标题：Entropy-based Active Learning for Object Detection with Progressive Diversity Constraint 中文标题：具有渐进多样性约束的基于熵的主动学习目标检测 作者团队：State Key Laboratory of Software Development Environment, Beihang Univer">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://d3k7h0r2a6movb.cloudfront.net/image/2024/12/b5a2c1220870bd5d614cad1a1b789f5a.png">
+<meta property="og:image" content="https://d3k7h0r2a6movb.cloudfront.net/image/2024/12/1f0c0dbd3b76b33309669dc81fcb1e5d.png">
+<meta property="og:image" content="https://d3k7h0r2a6movb.cloudfront.net/image/2024/12/097bef2fe340bc560bca967809496e21.png">
+<meta property="article:published_time" content="2025-01-17T04:56:47.897Z">
+<meta property="article:modified_time" content="2025-01-17T05:02:53.912Z">
+<meta property="article:author" content="wzhuo2022">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://d3k7h0r2a6movb.cloudfront.net/image/2024/12/b5a2c1220870bd5d614cad1a1b789f5a.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>DivProto</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2025/01/17/EOAL/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2025/01/17/CALD/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/01/17/DivProto/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/01/17/DivProto/&text=DivProto"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/01/17/DivProto/&title=DivProto"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/01/17/DivProto/&is_video=false&description=DivProto"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=DivProto&body=Check out this article: http://example.com/2025/01/17/DivProto/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/01/17/DivProto/&title=DivProto"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/01/17/DivProto/&title=DivProto"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/01/17/DivProto/&title=DivProto"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/01/17/DivProto/&title=DivProto"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/01/17/DivProto/&name=DivProto&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/01/17/DivProto/&t=DivProto"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%93%9A%E7%A0%94%E7%A9%B6%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">📚研究背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%8E%AF%E4%B8%BB%E8%A6%81%E8%B4%A1%E7%8C%AE"><span class="toc-number">2.</span> <span class="toc-text">🎯主要贡献</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%8D%8D%E6%8A%80%E6%9C%AF%E7%BB%86%E8%8A%82"><span class="toc-number">3.</span> <span class="toc-text">🍍技术细节</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%8D%93%E5%B0%86%E2%80%9CCore-set%E2%80%9D%E5%BC%95%E5%85%A5%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E4%BB%BB%E5%8A%A1%E6%97%B6%E6%89%80%E9%9D%A2%E4%B8%B4%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">3.1.</span> <span class="toc-text">🍓将“Core-set”引入目标检测任务时所面临的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-Core-set-%E4%B8%8E%E4%B8%BB%E5%8A%A8%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">3.1.1.</span> <span class="toc-text">1. Core-set 与主动学习问题的定义</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%B0%86-Core-set-%E6%80%9D%E8%B7%AF%E5%BA%94%E7%94%A8%E5%88%B0%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B"><span class="toc-number">3.1.2.</span> <span class="toc-text">2. 将 Core-set 思路应用到目标检测</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E5%BA%A6%E9%87%8F%EF%BC%9A%E7%94%A8%E7%86%B5%E6%9B%BF%E6%8D%A2%E5%8E%9F%E6%9C%AC%E7%9A%84%E6%A3%80%E6%B5%8B%E6%8D%9F%E5%A4%B1"><span class="toc-number">3.1.3.</span> <span class="toc-text">3. 不确定性度量：用熵替换原本的检测损失</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E5%9B%BE%E5%83%8F%E7%BA%A7-vs-%E5%AE%9E%E4%BE%8B%E7%BA%A7%EF%BC%8C%E5%8F%8A%E5%85%B6%E5%86%97%E4%BD%99%E9%97%AE%E9%A2%98"><span class="toc-number">3.1.4.</span> <span class="toc-text">4. 图像级 vs. 实例级，及其冗余问题</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-%E6%80%BB%E7%BB%93"><span class="toc-number">3.1.5.</span> <span class="toc-text">5. 总结</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%8D%93%E5%A6%82%E4%BD%95%E5%9C%A8%E5%8D%95%E5%BC%A0%E5%9B%BE%E7%89%87%E9%87%8C%E5%8E%BB%E9%99%A4%E5%86%97%E4%BD%99%E6%A3%80%E6%B5%8B%E5%AE%9E%E4%BE%8B"><span class="toc-number">3.2.</span> <span class="toc-text">🍓如何在单张图片里去除冗余检测实例</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-ENMS%EF%BC%9F"><span class="toc-number">3.2.1.</span> <span class="toc-text">1. 为什么需要 ENMS？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-ENMS-%E7%9A%84%E6%80%9D%E6%83%B3"><span class="toc-number">3.2.2.</span> <span class="toc-text">2. ENMS 的思想</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-ENMS%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B%E6%A6%82%E6%8B%AC"><span class="toc-number">3.2.3.</span> <span class="toc-text">3. ENMS算法流程概括</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E6%A0%B7%E5%81%9A%E6%9C%89%E6%95%88%EF%BC%9F"><span class="toc-number">3.2.4.</span> <span class="toc-text">4. 为什么这样做有效？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-%E5%85%B6%E5%AE%83%E8%A1%A5%E5%85%85%E8%A6%81%E7%82%B9"><span class="toc-number">3.2.5.</span> <span class="toc-text">5. 其它补充要点</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">3.2.6.</span> <span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%8D%93%E5%A6%82%E4%BD%95%E4%BF%9D%E6%8C%81%E5%9B%BE%E5%83%8F%E7%BA%A7%E7%9A%84%E5%A4%9A%E6%A0%B7%E6%80%A7"><span class="toc-number">3.3.</span> <span class="toc-text">🍓如何保持图像级的多样性</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%80%83%E8%99%91%E2%80%9C%E8%B7%A8%E5%9B%BE%E5%83%8F%E5%A4%9A%E6%A0%B7%E6%80%A7%E2%80%9D%EF%BC%9F"><span class="toc-number">3.3.1.</span> <span class="toc-text">1. 为什么要考虑“跨图像多样性”？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-Prototype%EF%BC%88%E5%8E%9F%E5%9E%8B%EF%BC%89%E7%9A%84%E6%A6%82%E5%BF%B5%EF%BC%9A%E5%A6%82%E4%BD%95%E5%88%BB%E7%94%BB%E4%B8%80%E5%BC%A0%E5%9B%BE%E5%83%8F%E5%AF%B9%E6%9F%90%E4%B8%AA%E7%B1%BB%E5%88%AB%E7%9A%84%E4%BB%A3%E8%A1%A8%E6%80%A7%EF%BC%9F"><span class="toc-number">3.3.2.</span> <span class="toc-text">2. Prototype（原型）的概念：如何刻画一张图像对某个类别的代表性？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E8%B7%A8%E5%9B%BE%E5%83%8F%E5%A4%9A%E6%A0%B7%E6%80%A7%E5%BA%A6%E9%87%8F%EF%BC%9A-M-g-I-i-C"><span class="toc-number">3.3.3.</span> <span class="toc-text">3. 跨图像多样性度量：$M_g(I_i, C)$</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-Intra%E2%80%90class-Diversity%EF%BC%88%E5%9B%BE%E5%83%8F%E5%86%85%E9%83%A8%E7%B1%BB%E7%9A%84%E5%A4%9A%E6%A0%B7%E6%80%A7%EF%BC%89%E4%B8%8E%E9%98%88%E5%80%BC-T-text-intra"><span class="toc-number">3.3.4.</span> <span class="toc-text">4. Intra‐class Diversity（图像内部类的多样性）与阈值 $T_\text{intra}$</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-Inter%E2%80%90class-Diversity%EF%BC%88%E7%B1%BB%E5%88%AB%E9%97%B4%E7%9A%84%E5%B9%B3%E8%A1%A1%EF%BC%89%E4%B8%8E%E9%98%88%E5%80%BC-T-text-inter"><span class="toc-number">3.3.5.</span> <span class="toc-text">5. Inter‐class Diversity（类别间的平衡）与阈值 $T_\text{inter}$</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#6-Diverse-Prototype-%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B%E6%A6%82%E6%8B%AC"><span class="toc-number">3.3.6.</span> <span class="toc-text">6. Diverse Prototype 算法流程概括</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#7-%E6%80%BB%E7%BB%93"><span class="toc-number">3.3.7.</span> <span class="toc-text">7. 总结</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        DivProto
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">wzhuo2022</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-17T04:56:47.897Z" class="dt-published" itemprop="datePublished">2025-01-17</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <blockquote>
+<p><strong>论文标题</strong>：Entropy-based Active Learning for Object Detection with Progressive Diversity Constraint</p>
+<p><strong>中文标题</strong>：具有渐进多样性约束的基于熵的主动学习目标检测</p>
+<p><strong>作者团队</strong>：<em>State Key Laboratory of Software Development Environment, Beihang University Beijing, China</em>  &amp; <em>School of Computer Science and Engineering, Beihang University, Beijing, China</em></p>
+<p><strong>期刊会议</strong>：CVPR</p>
+<p><strong>时间</strong>：2022</p>
+<p><strong>代码</strong>：暂无</p>
+</blockquote>
+<hr>
+<h3 id="📚研究背景"><a href="#📚研究背景" class="headerlink" title="📚研究背景"></a>📚研究背景</h3><p>这篇论文的核心问题在于<strong>如何在主动学习（Active Learning）场景下，为目标检测模型高效地挑选最有价值的未标注图像</strong>。具体而言，论文关心以下几个主要难点：</p>
+<ol>
+<li><p><strong>目标检测场景下的实例级冗余</strong></p>
+<ul>
+<li>单张图像中往往存在许多候选框（bounding boxes），其中很多彼此相似，传统的 NMS（Non-Maximum Suppression）只能去除强重叠框，却难以消除“外观极为相似但位置并不重叠”的实例重复。</li>
+<li>如果过多地选入这些冗余实例，会浪费标注成本，降低主动学习的效率。</li>
+</ul>
+</li>
+<li><p><strong>跨图像间的冗余与类不平衡</strong></p>
+<ul>
+<li>不同图像之间也可能存在高度相似的视觉内容，如果仅依靠图像不确定性（熵）进行排序，容易在全局上选入大量相似图像，无法提升多样性。</li>
+<li>同时，数据集普遍存在“多数类”和“少数类”的不平衡现象，如果只根据熵高低选图，容易忽略少数类，导致类别分布更加偏斜。</li>
+</ul>
+</li>
+<li><p><strong>在考虑不确定性的同时，如何兼顾多样性</strong></p>
+<ul>
+<li>主动学习的目标不仅仅是找出“最难预测”的图像或实例，还要确保训练样本的分布具有足够多样性，涵盖更多类别和更广泛的场景，以提高模型的泛化能力。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="🎯主要贡献"><a href="#🎯主要贡献" class="headerlink" title="🎯主要贡献"></a>🎯主要贡献</h3><p><img src="https://d3k7h0r2a6movb.cloudfront.net/image/2024/12/b5a2c1220870bd5d614cad1a1b789f5a.png" alt="image.png"></p>
+<ol>
+<li><p><strong>基于熵的实例级筛选（ENMS）</strong></p>
+<ul>
+<li><strong>提出 ENMS（Entropy-based Non-Maximum Suppression）</strong> 作为常规 NMS 的后续步骤，专门消除单张图像内的实例级冗余。</li>
+<li>通过<strong>实例熵</strong>（衡量检测框的不确定性）选择最有价值（最难预测）的实例并保留，而对同类别且外观特征相似度较高的其它检测框进行抑制，减轻单图像内部的重复信息。</li>
+</ul>
+</li>
+<li><p><strong>引入“原型”来衡量跨图像相似度（Diverse Prototype, DivProto）</strong></p>
+<ul>
+<li>为每个图像在各类别上定义一个**“原型特征”**（通过将高不确定性检测框的特征加权累加得到），用以度量图像之间在类别维度的相似性。</li>
+<li>通过比较图像与已选图集在相同类别原型向量上的相似度，筛掉与已选集过于相似的图像，进一步提升<strong>跨图像多样性</strong>。</li>
+</ul>
+</li>
+<li><p><strong>在类别层面实现平衡（Inter-class Balancing）</strong></p>
+<ul>
+<li>对出现频次较低的“少数类”进行特殊照顾，给它们分配更大的标注配额（quota）。当模型预测某张未标注图含有少数类时，就会提高其被选中的优先级。</li>
+<li>这样在保证熵筛选机制的同时，也能兼顾类平衡，避免过度倾向多数类，从而增加<strong>类别多样性</strong>。</li>
+</ul>
+</li>
+<li><p><strong>全流程主动学习框架</strong></p>
+<ul>
+<li>将上述方法整合进完整的主动学习管线：首先对候选图像做 ENMS 获得图像级熵，然后基于原型特征进行跨图像不冗余筛选，同时关注少数类配额分配，最终选出<strong>高不确定、高多样性</strong>、包含重要少数类的图像集进行标注。</li>
+<li>提高了标注效率，并能在有限标注预算下获得更优的检测性能。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="🍍技术细节"><a href="#🍍技术细节" class="headerlink" title="🍍技术细节"></a>🍍技术细节</h3><h4 id="🍓将“Core-set”引入目标检测任务时所面临的问题"><a href="#🍓将“Core-set”引入目标检测任务时所面临的问题" class="headerlink" title="🍓将“Core-set”引入目标检测任务时所面临的问题"></a>🍓将“Core-set”引入目标检测任务时所面临的问题</h4><h5 id="1-Core-set-与主动学习问题的定义"><a href="#1-Core-set-与主动学习问题的定义" class="headerlink" title="1. Core-set 与主动学习问题的定义"></a>1. Core-set 与主动学习问题的定义</h5><p>文中首先引用了 Core-set 方法 ：</p>
+<blockquote>
+<p>在主动学习场景下，Core-set 方法的目标是最小化 core-set loss$$\sum\limits_{i\in[n]}l(I_i, y_i; D_S)$$其中 $I_i$ 表示第 ii 张图像，$y_i$ 是它的标签(在目标检测里则会包括目标边界框、类别等信息)，$D_S$ 是现有的模型或特征提取器等。</p>
+</blockquote>
+<ul>
+<li><p><strong>主动学习(Active Learning)</strong>：核心思想是给定一个未标注的数据池，我们要在其中“挑选”最有价值的样本来标注，以尽量少的标注成本训练一个性能尽可能高的模型。</p>
+</li>
+<li><p><strong>Core-set 的思路</strong>：大致是想在特征空间中挑出能代表整个数据分布的样本(或者说能“覆盖”所有数据的多样性)。这样选出来的样本，就能以尽可能小的规模取得较好的性能。</p>
+</li>
+</ul>
+<hr>
+<h5 id="2-将-Core-set-思路应用到目标检测"><a href="#2-将-Core-set-思路应用到目标检测" class="headerlink" title="2. 将 Core-set 思路应用到目标检测"></a>2. 将 Core-set 思路应用到目标检测</h5><p>在目标检测(而非图像分类)环境下，作者把检测器 $D_S$ 拆成两部分：</p>
+<ol>
+<li><strong>编码器(encoder) $P_S$</strong>：把图像 $I_i$ 的一系列空间位置(比如特征图上的各个位置)映射为特征向量，记作$$P_S(I_i) &#x3D; {P_S(I_i, k)}_{k \in [t]}.$$其中 $k \in [t]$ 表示特征图上的位置索引(或 anchor 索引等)，也可以理解成对图像的所有“候选位置”或“感受野”做的特征提取。</li>
+<li><strong>预测器(predictor) $A_S$</strong>：在得到的特征基础上，预测每个位置 kk 的检测结果，记作<br>$$A_S(P_S(I_i)) &#x3D; { \hat{y}<em>{i,k}, c</em>{i,k}, p_{i,k} }_{k \in [t]}$$<ul>
+<li>$\hat{y}_{i,k}$ 表示第 $k$ 个位置的边界框(bounding box)。</li>
+<li>$c_{i,k}$ 表示预测到的目标类别。</li>
+<li>$p_{i,k}$ 表示预测到的置信度(confidence score)。</li>
+</ul>
+</li>
+</ol>
+<p>随后，<strong>图像级的 loss</strong> 可以看作所有实例(即 k 个位置)损失的和。例如：</p>
+<p>$$l(I_i; \cdot) &#x3D; \sum_{k \in [t]} l_D\bigl(P_S(I_i,k), y_{i,k}; A_S\bigr)$$</p>
+<p>其中 $l_D$ 是针对单个实例(一个候选框)的损失函数。理想情况下，若要直接用 Core-set 思路，就要求这个图像级损失函数具有“Lipschitz 连续”之类的良好性质。但文中指出，因为</p>
+<ol>
+<li>$P_S(I_i)$ 本身是无序的(一张图里不同位置特征的排列可以是任意顺序)，</li>
+<li>对目标检测来说，定义这样的连续度并不容易，</li>
+</ol>
+<p>所以导致原本的 Core-set 方法并不容易直接在目标检测场景“无缝”应用。</p>
+<hr>
+<h5 id="3-不确定性度量：用熵替换原本的检测损失"><a href="#3-不确定性度量：用熵替换原本的检测损失" class="headerlink" title="3. 不确定性度量：用熵替换原本的检测损失"></a>3. 不确定性度量：用熵替换原本的检测损失</h5><p>为了解决上述难题，作者参考了一些基于“不确定性(uncertainty)”的主动学习研究 ，提出了一种<strong>熵(Entropy)度量</strong>做替换。这里给出了对第 $k$ 个实例(检测框)的不确定性度量：</p>
+<p>$$H(I_i, k) &#x3D; -p_{i,k} \log p_{i,k} ;-; (1-p_{i,k}) \log (1-p_{i,k})$$</p>
+<p>其中</p>
+<ul>
+<li>$p_{i,k}$ 是把第 k 个位置当作“前景目标”的置信度；</li>
+<li>$1 - p_{i,k}$ 则是当作“背景”的置信度。</li>
+</ul>
+<p>这个式子类似于二分类场景下的熵，刻画了预测结果不确定性的大小：当 $p_{i,k}$ 越接近 0 或 1 时，熵就越小；而当 $p_{i,k}$ 在 0.5 附近时，熵就会比较大，代表预测不确定性较高。</p>
+<p><strong>图像级的“基础检测熵”</strong>(basic detection entropy) 则是把该图像上所有位置(实例)的熵累加：</p>
+<p>$$\mathcal{H}(I_i \mid D_S) &#x3D; \sum_{k \in [t]} H(I_i, k).$$</p>
+<p>然后按照这个值来对未标注图像做排序，选出熵值最高的前 K 张图像(“top-K images”)进行标注。因为熵越高通常代表模型越“不确定”，这些样本对模型的提升往往也更显著。</p>
+<hr>
+<h5 id="4-图像级-vs-实例级，及其冗余问题"><a href="#4-图像级-vs-实例级，及其冗余问题" class="headerlink" title="4. 图像级 vs. 实例级，及其冗余问题"></a>4. 图像级 vs. 实例级，及其冗余问题</h5><p>在目标检测中，如果一个图像里出现了多个“几乎相同或非常相似的边界框”，这些冗余的 box 并不会给模型提供多少新信息，反而使标注成本更高。因此，<strong>在做主动学习时，不仅要在图像级别进行选取</strong>(比如选熵最高的图像)，<strong>也要考虑到实例级别</strong>(具体的框是否冗余、信息量大不大)，从而兼顾两者才能达到更好的效果。</p>
+<p>文中说他们的方法与以往单纯的图像级或单纯的实例级方法相比，还在探索一个兼顾“实例级评估 + 图像级选取”的混合方案，希望能更好地<strong>既保持多样性，又不浪费标注时间</strong>，实现一个更高效的主动学习策略。</p>
+<hr>
+<h5 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h5><ul>
+<li><strong>Core-set 思路</strong>：希望选出最具代表性的一批样本，让模型学到更通用的特征。</li>
+<li><strong>目标检测的难点</strong>：一张图像里包含多个待检测目标(多个位置)，如果直接把所有位置的预测视作有序或可被度量距离，就会面临“无序、复杂度高、不易保持连续特性”等问题。</li>
+<li><strong>用熵来衡量不确定性</strong>：给每个候选位置打分，把整个图像的“熵值”作为衡量该图像是否值得标注的指标。</li>
+<li><strong>信息冗余问题</strong>：即使一张图整体熵很高，也可能有许多重复或相似的目标框，因此有必要进一步考虑实例级的冗余度，减少不必要的标注。</li>
+</ul>
+<p>作者提出了在图像级别先筛选，再兼顾实例级别细节的思路(或者融合图像与实例级策略)，这样既能挑选高不确定性的图像，又能去除重复或价值不大的实例框，旨在实现更高效、更精细的主动学习。</p>
+<hr>
+<h4 id="🍓如何在单张图片里去除冗余检测实例"><a href="#🍓如何在单张图片里去除冗余检测实例" class="headerlink" title="🍓如何在单张图片里去除冗余检测实例"></a>🍓如何在单张图片里去除冗余检测实例</h4><h5 id="1-为什么需要-ENMS？"><a href="#1-为什么需要-ENMS？" class="headerlink" title="1. 为什么需要 ENMS？"></a>1. 为什么需要 ENMS？</h5><ol>
+<li><p><strong>常规 NMS 的局限</strong></p>
+<ul>
+<li>常规 NMS 主要根据<strong>重叠面积</strong>和<strong>置信度</strong>来抑制重复边界框：如果两个框高度重叠，往往只保留置信度更高的框，将另一个删除。</li>
+<li>但如果两个检测实例并不重叠（或者重叠度不大），却外观非常相似，NMS 并不会把它们合并。结果就会出现<strong>实例级冗余</strong>：同一张图里有多个“极度相似的”目标（比如一堆长得几乎一样的对象），它们为模型提供的增益有限，却消耗了额外的标注&#x2F;计算资源。</li>
+</ul>
+</li>
+<li><p><strong>主动学习的需求</strong></p>
+<ul>
+<li>在主动学习中，我们希望挑选出信息量最大、最具不确定性的实例进行标注。</li>
+<li>如果出现大量“外观几乎相同”的实例，标注它们并不会带来更多信息，反而浪费标注成本。</li>
+<li>所以需要对“相似实例”进行额外抑制，留下最有价值的那几个。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h5 id="2-ENMS-的思想"><a href="#2-ENMS-的思想" class="headerlink" title="2. ENMS 的思想"></a>2. ENMS 的思想</h5><blockquote>
+<p>“We propose a simple yet effective Entropy-based Non-Maximum Suppression (ENMS) as a successive step of NMS for instance-level redundancy removal.”</p>
+</blockquote>
+<ul>
+<li><strong>在普通 NMS 之后再做一次“基于熵”的筛选</strong>，专门解决“同类、外观相似”的问题。</li>
+<li><strong>核心指标</strong>：<ol>
+<li><strong>实例熵</strong> $\mathrm{H}(I_i, k)$<ul>
+<li>表示该 bounding box（第 k 个实例）的“不确定性”大小，熵越大说明该实例越“难预测”（更值得关注）。</li>
+</ul>
+</li>
+<li><strong>特征相似度</strong> $\mathrm{Sim}(f_{i,k}, f_{i,j})$<ul>
+<li>使用余弦相似度来衡量两个实例（bounding box）的外观特征是否相似。</li>
+<li>如果相似度大于给定阈值 $T_{\mathrm{enms}}$，则视为“冗余”，只保留其中更具信息量的一个。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h5 id="3-ENMS算法流程概括"><a href="#3-ENMS算法流程概括" class="headerlink" title="3. ENMS算法流程概括"></a>3. ENMS算法流程概括</h5><p>ENMS主要流程见下图可以概括为：</p>
+<p><img src="https://d3k7h0r2a6movb.cloudfront.net/image/2024/12/1f0c0dbd3b76b33309669dc81fcb1e5d.png"></p>
+<ol>
+<li><strong>计算所有实例熵</strong><ul>
+<li>对图像内所有目标实例$k\in[t]$逐个计算熵$\mathrm{H}(I_i, k)$</li>
+</ul>
+</li>
+<li><strong>初始化集合</strong> $S_{\mathrm{ins}}$<ul>
+<li>包含当前图像中所有实例的索引，例如 ${1,2,\dots,t}$</li>
+</ul>
+</li>
+<li><strong>循环选取最具信息的实例</strong><ul>
+<li>从剩余集合 $S_{\mathrm{ins}}$ 中，<strong>找出熵最大的实例</strong> $k_{\mathrm{pick}}$。这是当前“最有价值”的实例。</li>
+<li>把这个实例的熵累加到图像的总熵 $\mathrm{E}<em>i$ 中，并把它从 $S</em>{\mathrm{ins}}$ 移除。</li>
+</ul>
+</li>
+<li><strong>在同一类别内删除相似实例</strong><ul>
+<li>对集合$S_{\mathrm{ins}}$ 中剩下的实例 j，如果它和 $k_{\mathrm{pick}}$ 是<strong>同一个类别</strong>，且相似度 $\mathrm{Sim}(f_{i,j}, f_{i,k_{\mathrm{pick}}})$ 大于设定阈值 $T_{\mathrm{enms}}$，就判定它与 $k_{\mathrm{pick}}$ 重复，予以移除。</li>
+<li>这样做可以避免在同一类别中出现大量外观几乎一样的实例。</li>
+</ul>
+</li>
+<li><strong>迭代进行，直到 $S_{\mathrm{ins}}$为空</strong><ul>
+<li>也就是说，会不断选出当前最不确定（熵最高）的实例，保留它并清除同类的相似实例。最终得到一个去除冗余后的实例集合，同时得到新的图像级熵值$\mathrm{E}_i$。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h5 id="4-为什么这样做有效？"><a href="#4-为什么这样做有效？" class="headerlink" title="4. 为什么这样做有效？"></a>4. 为什么这样做有效？</h5><ul>
+<li><strong>选出最具信息的实例</strong>：优先保留熵最高（不确定性最高）的那个实例，因为它最能帮助模型学习。</li>
+<li><strong>去除同类相似实例</strong>：那些与已选实例外观“高度雷同”的目标，对模型的学习增益很有限，保留会产生冗余。</li>
+<li><strong>减少实例失衡</strong>：避免某张图片含有极多同类、相似的目标，导致不平衡数据增多、计算量上升，而信息增益却不成比例。</li>
+</ul>
+<hr>
+<h5 id="5-其它补充要点"><a href="#5-其它补充要点" class="headerlink" title="5. 其它补充要点"></a>5. 其它补充要点</h5><ol>
+<li><strong>只比较同一类别</strong><ul>
+<li>只有在类别相同的前提下才去判断外观相似度，这样可以节省计算量，也符合语义逻辑。</li>
+</ul>
+</li>
+<li><strong>特征“on-the-fly”提取</strong><ul>
+<li>当在做 ENMS 时，需要用到每个实例的特征 $f_{i,k}$。文中提到可以“on-the-fly”抽取，也就是直接从编码器 $P_S$ 的输出中取出，不必额外加重太多负担。</li>
+</ul>
+</li>
+<li><strong>解决实例不平衡</strong><ul>
+<li>在一些场景中，一张图可能有很多相同或相似的物体（比如一张图里有一堆类似的车辆），ENMS 可以有效降低这种“单类爆炸式”实例数目的情况。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h5 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h5><ul>
+<li><strong>为什么要做 ENMS？</strong><br>  因为普通 NMS 仅能合并重叠框，无法去掉“不同位置但外观几乎相同”的实例，造成实例级冗余。</li>
+<li><strong>ENMS 怎么做？</strong><br>  基于<strong>实例熵</strong>选出最“难以预测、最具价值”的实例后，将与其同类别且余弦相似度高的实例视作冗余，依次删除。</li>
+<li><strong>好处是什么？</strong><br>  既<strong>保留了</strong>每张图里最有价值的“高不确定性”实例，又<strong>去除了</strong>大量相似冗余目标，能让主动学习或后续训练的效率更高，数据更精简、更具多样性。</li>
+</ul>
+<hr>
+<h4 id="🍓如何保持图像级的多样性"><a href="#🍓如何保持图像级的多样性" class="headerlink" title="🍓如何保持图像级的多样性"></a>🍓如何保持图像级的多样性</h4><p>这部分内容主要解决“<strong>跨图像</strong>的多样性（inter‐image diversity）”问题，简单说就是：</p>
+<blockquote>
+<p>如何在<strong>所有未标注图</strong>里挑选出那些“尽量不相似、并且包含更多少数类目标”的图像，以便标注后带来最大的增益？</p>
+</blockquote>
+<p>前面提到的 <strong>ENMS</strong> 解决了“单张图像内（intra‐image）”的冗余问题，但如果要在所有图像间也保持多样性，还需要进一步的策略。文中提出 <strong>Diverse Prototype (DivProto)</strong> 方法，下面逐步解释：</p>
+<hr>
+<h5 id="1-为什么要考虑“跨图像多样性”？"><a href="#1-为什么要考虑“跨图像多样性”？" class="headerlink" title="1. 为什么要考虑“跨图像多样性”？"></a>1. 为什么要考虑“跨图像多样性”？</h5><ul>
+<li><strong>跨图像冗余</strong>：如果我们只根据图像熵高低来选图片，可能选出许多情形相似、对象类别相似的图像；这样并不能增大整体的训练覆盖面。</li>
+<li><strong>类不平衡</strong>：在很多数据集里，“多数类”（比如常见的物体）往往出现频率高，而**“少数类”**容易被忽视。如果只依据熵高低选图，很可能继续偏向出现频率高的对象，从而让少数类在标注中被忽略。</li>
+<li><strong>主动学习的核心</strong>：要想让模型泛化更好，需要同时兼顾信息丰富度和样本多样性。</li>
+</ul>
+<hr>
+<h5 id="2-Prototype（原型）的概念：如何刻画一张图像对某个类别的代表性？"><a href="#2-Prototype（原型）的概念：如何刻画一张图像对某个类别的代表性？" class="headerlink" title="2. Prototype（原型）的概念：如何刻画一张图像对某个类别的代表性？"></a>2. Prototype（原型）的概念：如何刻画一张图像对某个类别的代表性？</h5><p>文中给每个图像 $I_i$ 在每个类别 c 上定义了一个 <strong>prototype</strong>，用来概括“该图像里与类别 c 相关的、不确定度较高的特征”。公式 (3) 大致是：</p>
+<p>$$\mathrm{proto}<em>{c,i} &#x3D; \sum</em>{k \in [t]} \underbrace{1(c_{i,k} &#x3D; c)}<em>{\text{是否预测成类别 }c} ;\cdot; \underbrace{\mathrm{H}(I_i, k)}</em>{\text{实例熵}} ;\cdot; \underbrace{f_{i,k}}_{\text{实例特征}}$$</p>
+<p>含义可以拆解为：</p>
+<ul>
+<li>$1(c_{i,k} &#x3D; c)$：如果第 k 个检测框预测为类别 c，则取值为 1，否则为 0。这样只会累加与类别 c 相关的特征。</li>
+<li>$\mathrm{H}(I_i, k)$：该检测框的不确定性熵。熵越高，说明这个框模型“拿不准”，它在这个类别上的信息量更大，于是对原型贡献更大。</li>
+<li>$f_{i,k}$：该检测框对应的特征向量（由编码器 $P_S$ 输出）。</li>
+<li>$\text{proto}_{c,i}$：把所有预测为 c 的实例按其熵加权后累加，得到一个向量，代表“图像 $I_i$ 对类别 c 的综合特征描述”，重点关注高不确定度实例。</li>
+</ul>
+<p>这样，每张图对每个类别 c 都有一个 <strong>prototype</strong>，可视作“图像在类别 c 上最关键的那部分特征”。</p>
+<hr>
+<h5 id="3-跨图像多样性度量：-M-g-I-i-C"><a href="#3-跨图像多样性度量：-M-g-I-i-C" class="headerlink" title="3. 跨图像多样性度量：$M_g(I_i, C)$"></a>3. 跨图像多样性度量：$M_g(I_i, C)$</h5><p>为衡量“图像 $I_i$”与已选集合 $\Delta S$ 在某些类别上的相似度，文中用到公式 (4) 定义了一个度量 $M_g(I_i, C)$：</p>
+<p>$$M_g(I_i, C) &#x3D; \min_{c \in C} \Bigl[ \max_{j \in \Delta S} \mathrm{Sim}\bigl(\mathrm{proto}<em>{c,i}, \mathrm{proto}</em>{c,j}\bigr) \Bigr]$$</p>
+<p>简而言之：</p>
+<ol>
+<li><strong>先固定一个类别 c</strong>，看图像 $I_i$ 在这个类别上的原型 $\mathrm{proto}<em>{c,i}$，与已选出来的那些图 $\Delta S$ 在同类别的原型 $\mathrm{proto}</em>{c,j}$ 是否“很像”。用 $\max_{j \in \Delta S}\mathrm{Sim}(\cdot)$ 表示“$I_i$”跟 $\Delta S$ 当中“最相似”的那个原型的相似度。</li>
+<li><strong>在所有类别 $c\in C$里，取一个最小值</strong>($\min_{c \in C}$)，表示如果有一个类别维度上很相似，那么整体就算相似度高。</li>
+</ol>
+<p>所以 $M_g(I_i, C)$ 越大，意味着 $I_i$ 在类别 $c\in C$ 中都有某些特征向量与 $\Delta S$ 中的相应类别非常相似，<strong>表示“冗余性较高”</strong>；而越小则表示与已选图集合更“不同”，多样性更好。</p>
+<hr>
+<h5 id="4-Intra‐class-Diversity（图像内部类的多样性）与阈值-T-text-intra"><a href="#4-Intra‐class-Diversity（图像内部类的多样性）与阈值-T-text-intra" class="headerlink" title="4. Intra‐class Diversity（图像内部类的多样性）与阈值 $T_\text{intra}$"></a>4. Intra‐class Diversity（图像内部类的多样性）与阈值 $T_\text{intra}$</h5><ul>
+<li><strong>目的</strong>：不希望选进来的新图，和已选集合 $\Delta S$ 在同样的类别上<strong>特别相似</strong>（那会浪费标注预算）。</li>
+<li><strong>方法</strong>：当 $M_g(I_i, [C])$（即图 $I_i$ 与 $\Delta S$ 在所有类别上的相似度）大于某阈值 $T_\text{intra}$ 时，就认为它和已选集合太相似，于是<strong>拒绝</strong>它，以保持多样性。</li>
+</ul>
+<p>换句话说：<br>如果图像 $I_i$ 在已标注类别上“跟已经选的图很像”，那就不选它，给别的更多样的图机会。</p>
+<hr>
+<h5 id="5-Inter‐class-Diversity（类别间的平衡）与阈值-T-text-inter"><a href="#5-Inter‐class-Diversity（类别间的平衡）与阈值-T-text-inter" class="headerlink" title="5. Inter‐class Diversity（类别间的平衡）与阈值 $T_\text{inter}$"></a>5. Inter‐class Diversity（类别间的平衡）与阈值 $T_\text{inter}$</h5><p>作者还注意到一个问题：假如大部分图片都包含“多数类”（例如狗、猫这样的常见类别），它们的熵可能也挺高，结果可能集中选取了含“狗猫”目标的图，却把那些“少数类”的图片漏掉。为了平衡各个类别（特别是<strong>少数类</strong>），文中设计了一个过程：</p>
+<ol>
+<li><strong>统计少数类（minority classes）</strong><ul>
+<li>根据训练集中每个类别出现的次数，找出出现次数最少的一些类，记为 $C_\text{minor}$。</li>
+<li>给这些少数类预留更多的标注配额（budget），保证它们不会被埋没。</li>
+</ul>
+</li>
+<li><strong>对图像进行判定</strong>：<ul>
+<li>如果某张未标注图含有这些少数类（即对其中某个少数类的置信度较高），就有更大的机会被选中。</li>
+<li>这里会设置一个阈值 $T_\text{inter}$，如果图像里针对某少数类 $c\in C_\text{minor}$ 的最大置信度$M_p(I_i, [C_\text{minor}])$ 超过 $T_\text{inter}$，则更倾向于接受它。</li>
+<li>每次接受一个包含某少数类的图，就减少该少数类的 quota（即 $C_\text{minor} :&#x3D; C_\text{minor} - 1$），直到少数类都满足一定量后再停止该过程。</li>
+</ul>
+</li>
+<li><strong>最终补足</strong>：<ul>
+<li>如果还没用完总的标注预算 b，就从剩余图像中继续按熵高低顺序往下补齐。</li>
+</ul>
+</li>
+</ol>
+<p>这样做的好处是：</p>
+<ul>
+<li>既能保证整体上挑选熵高、不确定性大的图片</li>
+<li>又会对那些包含<strong>少数类</strong>的图片开“绿色通道”，平衡类别分布，提升“<strong>类别间的多样性</strong>”</li>
+</ul>
+<hr>
+<h5 id="6-Diverse-Prototype-算法流程概括"><a href="#6-Diverse-Prototype-算法流程概括" class="headerlink" title="6. Diverse Prototype 算法流程概括"></a>6. Diverse Prototype 算法流程概括</h5><p><img src="https://d3k7h0r2a6movb.cloudfront.net/image/2024/12/097bef2fe340bc560bca967809496e21.png" alt="image.png"></p>
+<p>大体上看，<strong>Algorithm 2</strong> 做了两件事：</p>
+<ol>
+<li><strong>先做 ENMS</strong> 得到每张图的熵 $\mathrm{E}<em>i$；再算出它们在每个类别上的原型 $\mathrm{proto}</em>{c,i}$。</li>
+<li><strong>对未标注图按熵从大到小排序</strong>，并依次进行判断：<ul>
+<li>若该图和已选集 $\Delta S$ 在类别特征上相似度过高（$M_g(I_i, [C])&gt;T_\text{intra})$，则跳过。</li>
+<li>否则检查它是否包含少数类（$M_p(I_i, C_\text{minor})&gt;T_\text{inter}$)，如果是，就选进来并更新相关配额；</li>
+<li>如果不是（或少数类配额已经用完），则可以从熵排序里继续往下看，最后把剩余预算填满。</li>
+</ul>
+</li>
+</ol>
+<p>简而言之，“<strong>既要在同类里不相似</strong>（提高跨图像多样性），<strong>也要对少数类做特殊照顾</strong>（提高类别平衡）”。</p>
+<hr>
+<h5 id="7-总结"><a href="#7-总结" class="headerlink" title="7. 总结"></a>7. 总结</h5><ol>
+<li><strong>为何需要 DivProto？</strong><ul>
+<li>仅靠熵选图，会出现跨图像冗余、忽视少数类的问题。</li>
+</ul>
+</li>
+<li><strong>主要策略</strong>：<ul>
+<li><strong>Prototype</strong>：把每张图在每个类别上的“高熵实例特征”累加，得到一个原型向量，用来度量跨图像的相似度。</li>
+<li><strong>Intra‐class diversity</strong>：对“太像已选图片”的候选图加以拒绝，避免相同类别的重复信息。</li>
+<li><strong>Inter‐class balancing</strong>：给少数类更多选取机会，以保证类别分布的均衡。</li>
+</ul>
+</li>
+<li><strong>好处</strong>：<ul>
+<li>最终选出的图集既多样，又兼顾罕见类别，让主动学习的效率更高、覆盖面更广。</li>
+</ul>
+</li>
+</ol>
+<p>用更直白的话说，这一节主要就是为了在“所有未标注图”中选择一个高质量、兼顾多类的子集：</p>
+<ul>
+<li><strong>先排除</strong>那些跟已选图“太雷同”的，</li>
+<li><strong>优先包含</strong>某些少数类，</li>
+<li><strong>最后保证</strong>总体选到的图都“信息量大、差异性好”。</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%93%9A%E7%A0%94%E7%A9%B6%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">📚研究背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%8E%AF%E4%B8%BB%E8%A6%81%E8%B4%A1%E7%8C%AE"><span class="toc-number">2.</span> <span class="toc-text">🎯主要贡献</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%8D%8D%E6%8A%80%E6%9C%AF%E7%BB%86%E8%8A%82"><span class="toc-number">3.</span> <span class="toc-text">🍍技术细节</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%8D%93%E5%B0%86%E2%80%9CCore-set%E2%80%9D%E5%BC%95%E5%85%A5%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E4%BB%BB%E5%8A%A1%E6%97%B6%E6%89%80%E9%9D%A2%E4%B8%B4%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">3.1.</span> <span class="toc-text">🍓将“Core-set”引入目标检测任务时所面临的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-Core-set-%E4%B8%8E%E4%B8%BB%E5%8A%A8%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">3.1.1.</span> <span class="toc-text">1. Core-set 与主动学习问题的定义</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%B0%86-Core-set-%E6%80%9D%E8%B7%AF%E5%BA%94%E7%94%A8%E5%88%B0%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B"><span class="toc-number">3.1.2.</span> <span class="toc-text">2. 将 Core-set 思路应用到目标检测</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E5%BA%A6%E9%87%8F%EF%BC%9A%E7%94%A8%E7%86%B5%E6%9B%BF%E6%8D%A2%E5%8E%9F%E6%9C%AC%E7%9A%84%E6%A3%80%E6%B5%8B%E6%8D%9F%E5%A4%B1"><span class="toc-number">3.1.3.</span> <span class="toc-text">3. 不确定性度量：用熵替换原本的检测损失</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E5%9B%BE%E5%83%8F%E7%BA%A7-vs-%E5%AE%9E%E4%BE%8B%E7%BA%A7%EF%BC%8C%E5%8F%8A%E5%85%B6%E5%86%97%E4%BD%99%E9%97%AE%E9%A2%98"><span class="toc-number">3.1.4.</span> <span class="toc-text">4. 图像级 vs. 实例级，及其冗余问题</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-%E6%80%BB%E7%BB%93"><span class="toc-number">3.1.5.</span> <span class="toc-text">5. 总结</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%8D%93%E5%A6%82%E4%BD%95%E5%9C%A8%E5%8D%95%E5%BC%A0%E5%9B%BE%E7%89%87%E9%87%8C%E5%8E%BB%E9%99%A4%E5%86%97%E4%BD%99%E6%A3%80%E6%B5%8B%E5%AE%9E%E4%BE%8B"><span class="toc-number">3.2.</span> <span class="toc-text">🍓如何在单张图片里去除冗余检测实例</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-ENMS%EF%BC%9F"><span class="toc-number">3.2.1.</span> <span class="toc-text">1. 为什么需要 ENMS？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-ENMS-%E7%9A%84%E6%80%9D%E6%83%B3"><span class="toc-number">3.2.2.</span> <span class="toc-text">2. ENMS 的思想</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-ENMS%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B%E6%A6%82%E6%8B%AC"><span class="toc-number">3.2.3.</span> <span class="toc-text">3. ENMS算法流程概括</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E6%A0%B7%E5%81%9A%E6%9C%89%E6%95%88%EF%BC%9F"><span class="toc-number">3.2.4.</span> <span class="toc-text">4. 为什么这样做有效？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-%E5%85%B6%E5%AE%83%E8%A1%A5%E5%85%85%E8%A6%81%E7%82%B9"><span class="toc-number">3.2.5.</span> <span class="toc-text">5. 其它补充要点</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">3.2.6.</span> <span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%8D%93%E5%A6%82%E4%BD%95%E4%BF%9D%E6%8C%81%E5%9B%BE%E5%83%8F%E7%BA%A7%E7%9A%84%E5%A4%9A%E6%A0%B7%E6%80%A7"><span class="toc-number">3.3.</span> <span class="toc-text">🍓如何保持图像级的多样性</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%80%83%E8%99%91%E2%80%9C%E8%B7%A8%E5%9B%BE%E5%83%8F%E5%A4%9A%E6%A0%B7%E6%80%A7%E2%80%9D%EF%BC%9F"><span class="toc-number">3.3.1.</span> <span class="toc-text">1. 为什么要考虑“跨图像多样性”？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-Prototype%EF%BC%88%E5%8E%9F%E5%9E%8B%EF%BC%89%E7%9A%84%E6%A6%82%E5%BF%B5%EF%BC%9A%E5%A6%82%E4%BD%95%E5%88%BB%E7%94%BB%E4%B8%80%E5%BC%A0%E5%9B%BE%E5%83%8F%E5%AF%B9%E6%9F%90%E4%B8%AA%E7%B1%BB%E5%88%AB%E7%9A%84%E4%BB%A3%E8%A1%A8%E6%80%A7%EF%BC%9F"><span class="toc-number">3.3.2.</span> <span class="toc-text">2. Prototype（原型）的概念：如何刻画一张图像对某个类别的代表性？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E8%B7%A8%E5%9B%BE%E5%83%8F%E5%A4%9A%E6%A0%B7%E6%80%A7%E5%BA%A6%E9%87%8F%EF%BC%9A-M-g-I-i-C"><span class="toc-number">3.3.3.</span> <span class="toc-text">3. 跨图像多样性度量：$M_g(I_i, C)$</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-Intra%E2%80%90class-Diversity%EF%BC%88%E5%9B%BE%E5%83%8F%E5%86%85%E9%83%A8%E7%B1%BB%E7%9A%84%E5%A4%9A%E6%A0%B7%E6%80%A7%EF%BC%89%E4%B8%8E%E9%98%88%E5%80%BC-T-text-intra"><span class="toc-number">3.3.4.</span> <span class="toc-text">4. Intra‐class Diversity（图像内部类的多样性）与阈值 $T_\text{intra}$</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-Inter%E2%80%90class-Diversity%EF%BC%88%E7%B1%BB%E5%88%AB%E9%97%B4%E7%9A%84%E5%B9%B3%E8%A1%A1%EF%BC%89%E4%B8%8E%E9%98%88%E5%80%BC-T-text-inter"><span class="toc-number">3.3.5.</span> <span class="toc-text">5. Inter‐class Diversity（类别间的平衡）与阈值 $T_\text{inter}$</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#6-Diverse-Prototype-%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B%E6%A6%82%E6%8B%AC"><span class="toc-number">3.3.6.</span> <span class="toc-text">6. Diverse Prototype 算法流程概括</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#7-%E6%80%BB%E7%BB%93"><span class="toc-number">3.3.7.</span> <span class="toc-text">7. 总结</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/01/17/DivProto/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/01/17/DivProto/&text=DivProto"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/01/17/DivProto/&title=DivProto"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/01/17/DivProto/&is_video=false&description=DivProto"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=DivProto&body=Check out this article: http://example.com/2025/01/17/DivProto/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/01/17/DivProto/&title=DivProto"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/01/17/DivProto/&title=DivProto"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/01/17/DivProto/&title=DivProto"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/01/17/DivProto/&title=DivProto"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/01/17/DivProto/&name=DivProto&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/01/17/DivProto/&t=DivProto"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    wzhuo2022
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

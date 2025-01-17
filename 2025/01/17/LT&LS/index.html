@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="论文标题：Localization-Aware Active Learning for Object Detection 中文标题：面向目标检测的定位感知主动学习 作者团队：University of California, Santa Barbara &amp; Mitsubishi Electric Research Laboratories 期刊会议：ACCV 时间：2018 代码：暂无">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LT&amp;LS">
+<meta property="og:url" content="http://example.com/2025/01/17/LT&LS/index.html">
+<meta property="og:site_name" content="wzhuo2022&#39;s blog">
+<meta property="og:description" content="论文标题：Localization-Aware Active Learning for Object Detection 中文标题：面向目标检测的定位感知主动学习 作者团队：University of California, Santa Barbara &amp; Mitsubishi Electric Research Laboratories 期刊会议：ACCV 时间：2018 代码：暂无">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-17T04:56:48.917Z">
+<meta property="article:modified_time" content="2025-01-17T05:02:46.832Z">
+<meta property="article:author" content="wzhuo2022">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>LT&amp;LS</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2025/01/17/EOAL/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/01/17/LT&amp;LS/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/01/17/LT&amp;LS/&text=LT&amp;LS"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/01/17/LT&amp;LS/&title=LT&amp;LS"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/01/17/LT&amp;LS/&is_video=false&description=LT&amp;LS"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=LT&amp;LS&body=Check out this article: http://example.com/2025/01/17/LT&amp;LS/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/01/17/LT&amp;LS/&title=LT&amp;LS"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/01/17/LT&amp;LS/&title=LT&amp;LS"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/01/17/LT&amp;LS/&title=LT&amp;LS"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/01/17/LT&amp;LS/&title=LT&amp;LS"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/01/17/LT&amp;LS/&name=LT&amp;LS&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/01/17/LT&amp;LS/&t=LT&amp;LS"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%93%9A%E7%A0%94%E7%A9%B6%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">📚研究背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%8E%AF%E4%B8%BB%E8%A6%81%E8%B4%A1%E7%8C%AE"><span class="toc-number">2.</span> <span class="toc-text">🎯主要贡献</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%8D%8D%E6%8A%80%E6%9C%AF%E7%BB%86%E8%8A%82"><span class="toc-number">3.</span> <span class="toc-text">🍍技术细节</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%8D%93%E5%AE%9A%E4%BD%8D%E7%B4%A7%E5%AF%86%E5%BA%A6"><span class="toc-number">3.1.</span> <span class="toc-text">🍓定位紧密度</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF-Localization-Tightness-LT"><span class="toc-number">3.1.1.</span> <span class="toc-text">1. 什么是 Localization Tightness (LT)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8-Region-Proposal-%E6%9D%A5%E4%BC%B0%E8%AE%A1-Tightness"><span class="toc-number">3.1.2.</span> <span class="toc-text">2. 为什么用 Region Proposal 来估计 Tightness</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E5%A6%82%E4%BD%95%E5%AE%9A%E4%B9%89%E4%BC%B0%E8%AE%A1%E7%9A%84-Tightness"><span class="toc-number">3.1.3.</span> <span class="toc-text">3. 如何定义估计的 Tightness</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E5%B0%86-Tightness-%E5%92%8C%E5%88%86%E7%B1%BB%E7%BD%AE%E4%BF%A1%E5%BA%A6%E7%BB%93%E5%90%88"><span class="toc-number">3.1.4.</span> <span class="toc-text">4. 将 Tightness 和分类置信度结合</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-%E5%A6%82%E4%BD%95%E9%92%88%E5%AF%B9%E4%B8%80%E5%BC%A0%E5%9B%BE%E5%83%8F%E8%AE%A1%E7%AE%97%E6%9C%80%E7%BB%88%E5%88%86%E6%95%B0"><span class="toc-number">3.1.5.</span> <span class="toc-text">5. 如何针对一张图像计算最终分数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#6-%E5%B0%8F%E7%BB%93"><span class="toc-number">3.1.6.</span> <span class="toc-text">6. 小结</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%8D%93%E5%AE%9A%E4%BD%8D%E7%A8%B3%E5%AE%9A%E6%80%A7"><span class="toc-number">3.2.</span> <span class="toc-text">🍓定位稳定性</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF-Localization-Stability"><span class="toc-number">3.2.1.</span> <span class="toc-text">1. 什么是 Localization Stability</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%8F%82%E8%80%83%E6%A1%86-Reference-Boxes-%E4%B8%8E%E5%99%AA%E5%A3%B0%E7%AD%89%E7%BA%A7"><span class="toc-number">3.2.2.</span> <span class="toc-text">2. 参考框 (Reference Boxes) 与噪声等级</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E8%AE%A1%E7%AE%97%E5%8D%95%E4%B8%AA%E6%A1%86%E7%9A%84%E5%AE%9A%E4%BD%8D%E7%A8%B3%E5%AE%9A%E6%80%A7-S-B-B-j-0"><span class="toc-number">3.2.3.</span> <span class="toc-text">3. 计算单个框的定位稳定性 $S_B(B^j_0)$</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E8%AE%A1%E7%AE%97%E6%95%B4%E5%BC%A0%E5%9B%BE%E5%83%8F%E7%9A%84%E5%AE%9A%E4%BD%8D%E7%A8%B3%E5%AE%9A%E6%80%A7-S-I-I-i"><span class="toc-number">3.2.4.</span> <span class="toc-text">4. 计算整张图像的定位稳定性 $S_I(I_i)$</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-%E8%BF%99%E4%B8%AA%E6%8C%87%E6%A0%87%E5%9C%A8%E4%B8%BB%E5%8A%A8%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">3.2.5.</span> <span class="toc-text">5. 这个指标在主动学习中的作用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#6-%E5%B0%8F%E7%BB%93-1"><span class="toc-number">3.2.6.</span> <span class="toc-text">6. 小结</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        LT&amp;LS
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">wzhuo2022</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-17T04:56:48.917Z" class="dt-published" itemprop="datePublished">2025-01-17</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <blockquote>
+<p><strong>论文标题</strong>：Localization-Aware Active Learning for Object Detection</p>
+<p><strong>中文标题</strong>：面向目标检测的定位感知主动学习</p>
+<p><strong>作者团队</strong>：<em>University of California, Santa Barbara</em> &amp; <em>Mitsubishi Electric Research Laboratories</em></p>
+<p><strong>期刊会议</strong>：ACCV</p>
+<p><strong>时间</strong>：2018</p>
+<p><strong>代码</strong>：暂无</p>
+</blockquote>
+<hr>
+<h3 id="📚研究背景"><a href="#📚研究背景" class="headerlink" title="📚研究背景"></a>📚研究背景</h3><ol>
+<li><p><strong>主动学习 (Active Learning)</strong><br> 为了降低标注成本，研究者提出在训练过程中，<strong>智能地选择“最值得标注”的图像</strong>，从而在相同的标注预算下取得更好的模型性能。这就是主动学习的核心思想：既然无法给所有无标注数据都打标签，就挑选那些对于模型改进最有价值、最有不确定性的样本进行标注。</p>
+</li>
+<li><p><strong>本论文聚焦的难点：</strong></p>
+<ul>
+<li>经典主动学习多关注“分类”场景下的不确定度衡量，而在目标检测场景中，不仅仅要考虑<strong>类别不确定性</strong>（分类置信度），还要考虑<strong>定位不确定性</strong>（边界框是否准确）。</li>
+<li>对于无标注图像，无法直接对“定位质量”做评价（因为没有 ground truth），因此需要<strong>间接度量</strong>定位的不确定性。</li>
+</ul>
+</li>
+</ol>
+<p>在这样的背景下，本论文针对无标注图像，提出了多个衡量模型“定位”可靠程度的指标，包括<strong>Localization Tightness</strong>（定位紧密度）与 <strong>Localization Stability</strong>（定位稳定性），并把它们与分类置信度结合，在主动学习或数据筛选中帮助快速锁定“最需要人工标注”的图像。</p>
+<hr>
+<h3 id="🎯主要贡献"><a href="#🎯主要贡献" class="headerlink" title="🎯主要贡献"></a>🎯主要贡献</h3><ol>
+<li><p><strong>提出 Localization Tightness (LT)</strong></p>
+<ul>
+<li><strong>定义</strong>：衡量模型给出的<strong>预测框</strong>是否与“真实前景”足够重合的程度。由于无标注图像无法计算真实框与预测框的 IoU，作者<strong>利用与 region proposal 的 IoU 来近似</strong>定位紧密度。</li>
+<li><strong>思路</strong>：若 region proposal 被训练或设计来表示“前景目标的大概位置”，则与预测框的 IoU 越大，意味着预测框在定位上“越贴合前景”。</li>
+<li><strong>与分类置信度结合</strong>：作者不仅计算了预测框的紧密度，还与该框的最高分类概率 $⁡P_{\max}$ 结合，提出一个评分 $J(B) &#x3D; \bigl|,T(B) + P_{\max}(B) - 1\bigr|$ 用来衡量“定位和分类不一致度”。当预测框一边高置信度、一边低定位准确度时，$J$ 反而会变小，表示极端冲突，更值得关注。</li>
+<li><strong>应用</strong>：在主动学习中，挑选那些出现 <strong>“定位-分类冲突”</strong> 最明显的图像进行标注。</li>
+</ul>
+</li>
+<li><p><strong>提出 Localization Stability (LS)</strong></p>
+<ul>
+<li><strong>核心概念</strong>：若在图像中加入噪声后（多种噪声等级），模型的检测框仍然变化不大，说明它对这张图“定位非常稳定”。</li>
+<li><strong>实现方法</strong>：先在无噪声图像上得到参考框 $B^j_0$，再对各噪声等级下的检测结果与参考框做 IoU 对比，计算平均值作为<strong>单个框的稳定度</strong>。最后，用分类置信度加权求得整张图的稳定度。</li>
+<li><strong>意义</strong>：如果一张图的定位稳定度高，说明模型已经“学得很透彻”，不需要优先标注；如果定位稳定度低，就优先标注。</li>
+</ul>
+</li>
+<li><p><strong>将 Tightness、Stability 与分类置信度综合到主动学习框架中</strong></p>
+<ul>
+<li>论文将多个衡量指标（<strong>分类置信度、不确定性、紧密度、稳定性</strong>）<strong>统一到一个主动学习策略</strong>中。</li>
+<li>利用这些指标对未标注图像打分，<strong>优先筛选定位或分类冲突大的、或定位不稳定的图像</strong>，以在有限标注预算下提升模型性能。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="🍍技术细节"><a href="#🍍技术细节" class="headerlink" title="🍍技术细节"></a>🍍技术细节</h3><h4 id="🍓定位紧密度"><a href="#🍓定位紧密度" class="headerlink" title="🍓定位紧密度"></a>🍓定位紧密度</h4><h5 id="1-什么是-Localization-Tightness-LT"><a href="#1-什么是-Localization-Tightness-LT" class="headerlink" title="1. 什么是 Localization Tightness (LT)"></a>1. 什么是 Localization Tightness (LT)</h5><p><strong>Localization Tightness (LT)</strong> 描述了一个预测框（bounding box）和真实前景目标（ground truth）之间“重合得有多紧密”。如果我们能直接拿到真实框与预测框，就可以简单地用 IoU（Intersection over Union）来表示这种紧密程度：</p>
+<p>$$\mathrm{IoU}(B^1, B^2) ;&#x3D;; \frac{B^1 \cap B^2}{B^1 \cup B^2}$$</p>
+<p>但在无标注或缺乏真实框的情况下，我们无法直接计算“预测框和真值框”的 IoU，因此需要<strong>间接估计</strong>这种紧密度。</p>
+<hr>
+<h5 id="2-为什么用-Region-Proposal-来估计-Tightness"><a href="#2-为什么用-Region-Proposal-来估计-Tightness" class="headerlink" title="2. 为什么用 Region Proposal 来估计 Tightness"></a>2. 为什么用 Region Proposal 来估计 Tightness</h5><p>论文中提到，当我们没有真实标注框时，可以借助 <strong>Region Proposal</strong>（如 Selective Search、RPN 网络等产生的候选框）来帮助度量预测框的质量。理由是：</p>
+<ul>
+<li><strong>Region Proposal</strong> 是专门用来捕捉前景目标的大致位置的，如果它本身足够准确，那么和它的 IoU 能在一定程度上反映“预测框是否真地紧贴前景目标”。</li>
+<li>最终得到的<strong>refined bounding box</strong>（网络输出的预测框）通常是对 region proposal 的位置、大小进行进一步回归、修正后得到。如果 region proposal 原本就贴合目标非常好，那么最终 refined box 改动就会少；反之亦然。</li>
+</ul>
+<p>因此，论文将“预测框与对应的 region proposal 的 IoU”视为估计的 Tightness 值。</p>
+<hr>
+<h5 id="3-如何定义估计的-Tightness"><a href="#3-如何定义估计的-Tightness" class="headerlink" title="3. 如何定义估计的 Tightness"></a>3. 如何定义估计的 Tightness</h5><p>文中给出了一个公式来定义某个预测框（记为 $B^j_0$）的 tightness 评分 $T(B^j_0)$：</p>
+<p>$$T\bigl(B^j_0\bigr) ;&#x3D;; \mathrm{IoU}\bigl(B^j_0,; R^j_0\bigr)$$</p>
+<p>其中$R^j_0$ 就是<strong>在最终分类器产生$B^j_0$ 之前，所使用的那一个 region proposal</strong>。也就是说，它是对应的那个“原始候选框”。</p>
+<blockquote>
+<ul>
+<li>如果 $\mathrm{IoU}(B^j_0, R^j_0)$ 高，说明预测框和 region proposal 非常一致，那么我们会认为这个预测框对前景目标的定位比较紧密。</li>
+<li>如果 IoU 很低，意味着预测框和提议框差别大，说明网络对这个目标的“定位不确定”或“改动很多”。</li>
+</ul>
+</blockquote>
+<hr>
+<h5 id="4-将-Tightness-和分类置信度结合"><a href="#4-将-Tightness-和分类置信度结合" class="headerlink" title="4. 将 Tightness 和分类置信度结合"></a>4. 将 Tightness 和分类置信度结合</h5><p>论文不仅关心定位的可靠性，也关心分类的置信度。它提出了一个<strong>综合度量</strong>，用来衡量“定位紧密程度”与“分类置信度”之间是否出现了明显的不一致。</p>
+<p>设：</p>
+<ul>
+<li>$T\bigl(B^j_0\bigr)$ 为上面定义的 Tightness 分值，范围一般是 $[0, 1]$；</li>
+<li>$P_{\max}\bigl(B^j_0\bigr)$ 为预测框 $B^j_0$ 的<strong>最高分类概率</strong>（即网络认为最有可能的类别的概率），同样也是 $[0, 1]$ 之间。</li>
+</ul>
+<p>然后作者定义了一个<strong>盒子评分 $J\bigl(B^j_0\bigr)$</strong>：</p>
+<p>$$J\bigl(B^j_0\bigr) ;&#x3D;; \Bigl|, T\bigl(B^j_0\bigr) ;+; P_{\max}\bigl(B^j_0\bigr) ;-; 1 \Bigr|$$</p>
+<ul>
+<li>当这两项的和刚好等于 1 时，绝对值结果为 0，意味着在定位紧密性和分类置信度上没有“矛盾”或者“极端不一致”。</li>
+<li>如果其中一个很高(比如 $T&#x3D;1$)，另一个很低(比如 $P_{\max}&#x3D;0$)，那 $T + P_{\max} &#x3D; 1$，则 $J$ 就会变小（变为 0）。这种情况表示“定位完全正确但分类没信心”，或“定位很差但分类极度自信”，是一种“不正常”的情况。</li>
+<li>反之，如果 $T$ 和 $P_{\max}$ 同时都很高 (或同时都很低)，那么和要么大于 1，要么小于 1，导致 $J$ 变大，表示这个预测框出现了“定位和分类对不上的不一致”现象。</li>
+</ul>
+<p>倾向于寻找使得这个盒子评分较小的实例。</p>
+<hr>
+<h5 id="5-如何针对一张图像计算最终分数"><a href="#5-如何针对一张图像计算最终分数" class="headerlink" title="5. 如何针对一张图像计算最终分数"></a>5. 如何针对一张图像计算最终分数</h5><p>一张图里可能会有多个预测框 $B^j_0$。作者定义了整张图像的评分：</p>
+<p>$$T_I(I_i) ;&#x3D;; \min_j, J\bigl(B^j_0\bigr)$$</p>
+<p>也就是<strong>取该图中所有预测框评分 J 的最小值</strong>来代表整张图。“最小值”意味着，只要有一个预测框出现了“非常明显的定位-分类不一致”，就会让这张图获得一个较低的分数（因为上式是取最小值，在作者的选图标准里，数值小表示可能更值得关注或标注）。</p>
+<p>之后，在主动学习（Active Learning）或半监督等场景下，可以<strong>优先选那些低分的图</strong>进行人工标注或进一步审核，因为这些图很可能在定位和分类之间存在冲突或很大不确定性。</p>
+<hr>
+<h5 id="6-小结"><a href="#6-小结" class="headerlink" title="6. 小结"></a>6. 小结</h5><ol>
+<li><p><strong>为何需要 Tightness？</strong><br> 为了度量“预测框是否真正把前景紧密包住”并衡量模型的定位不确定性。</p>
+</li>
+<li><p><strong>为什么用 region proposal？</strong><br> 因为没有真实框时，region proposal 是最接近“前景”概念的候选框，二者 IoU 一定程度上能反映定位质量。</p>
+</li>
+<li><p><strong>综合指标 $J(B^j_0)$ 的意义？</strong><br> 将定位紧密度 $T$ 与分类置信度 $P_{\max}$ 结合，观察二者是否出现极端不一致（比如分类很自信但定位很糟，或定位很准但分类不自信）。</p>
+</li>
+<li><p><strong>整张图像的选择策略</strong><br> 每张图用所有预测框的 $J$ 取最小值作为图像分数；分数越低，代表“定位与分类的冲突或不确定性越大”，在主动学习中可优先挑选标注。</p>
+</li>
+</ol>
+<hr>
+<h4 id="🍓定位稳定性"><a href="#🍓定位稳定性" class="headerlink" title="🍓定位稳定性"></a>🍓定位稳定性</h4><h5 id="1-什么是-Localization-Stability"><a href="#1-什么是-Localization-Stability" class="headerlink" title="1. 什么是 Localization Stability"></a>1. 什么是 Localization Stability</h5><p><strong>Localization Stability</strong> 指的是：当我们在图像中加入一定程度的噪声后，如果模型依然能输出相对一致&#x2F;稳定的检测框（bounding boxes），就说明模型对这张图的“定位”已经相当了解或“学得很好”了。换言之，<strong>加噪后检测结果若没有明显改变，表示模型对该图的前景目标定位非常稳健</strong>。对主动学习而言，<strong>这类“定位很稳”的无标注图，就不太需要优先标注</strong>；因为模型已经“懂”这张图了。</p>
+<hr>
+<h5 id="2-参考框-Reference-Boxes-与噪声等级"><a href="#2-参考框-Reference-Boxes-与噪声等级" class="headerlink" title="2. 参考框 (Reference Boxes) 与噪声等级"></a>2. 参考框 (Reference Boxes) 与噪声等级</h5><ul>
+<li>参考框 $B^j_0$</li>
+</ul>
+<ol>
+<li>首先，针对未加噪的原图（没有标注的图像），模型会输出一批检测框。</li>
+<li>这些“在原图（无噪声）上检测到的框”被称为 <strong>参考框 (Reference Boxes)</strong>，并用符号 $B^j_0$ 表示。<ul>
+<li>上标 j 表示第 j 个框；下标 0 表示“噪声等级是 0”（即无噪图像）。</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>加噪后的检测结果</li>
+</ul>
+<ol>
+<li><p>论文设定了多个“噪声等级” $n$，每个等级都对原图进行高斯噪声的注入，且噪声强度（标准差）随着 $n$ 递增。</p>
+</li>
+<li><p>对于每个噪声等级 $n$ 的“加噪图”，模型也会输出一批检测框。作者会在这些检测框里，寻找与参考框 $B^j_0$ <strong>最匹配</strong>（也就是 IoU 最大）的那个框，记为</p>
+<p> $$C_n\bigl(B^j_0\bigr)$$</p>
+<p> 这一步可以理解成：<strong>“看看当加了噪声后，这个参考框会‘跑’到哪儿去？”</strong></p>
+<ul>
+<li>如果模型定位得非常稳定，那么加噪后找到的框 $C_n(B^j_0)$ 应该与 $B^j_0$ 差别不大、二者 IoU 还保持较高水平。</li>
+<li>如果加入噪声后，这个框明显偏移或形状变化很大，IoU 会变低，反映出模型在定位上可能不稳定。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h5 id="3-计算单个框的定位稳定性-S-B-B-j-0"><a href="#3-计算单个框的定位稳定性-S-B-B-j-0" class="headerlink" title="3. 计算单个框的定位稳定性 $S_B(B^j_0)$"></a>3. 计算单个框的定位稳定性 $S_B(B^j_0)$</h5><p>作者将“单个参考框在不同噪声条件下对应框的 IoU”取了一个平均，得到它的定位稳定度。</p>
+<p>$$S_B\bigl(B^j_0\bigr) ;&#x3D;; \frac{ \sum_{n&#x3D;1}^{N} \mathrm{IoU}\bigl(,B^j_0,; C_n(B^j_0)\bigr) }{ N } $$</p>
+<ul>
+<li>$N$ 是噪声等级的总数。</li>
+<li>这里的思路简单明了：越是对噪声不敏感、能始终锁定目标位置的框，其 <strong>IoU 平均值</strong>就会更接近 1；而若它随着噪声飘来飘去，平均 IoU 就会变得更低。</li>
+</ul>
+<hr>
+<h5 id="4-计算整张图像的定位稳定性-S-I-I-i"><a href="#4-计算整张图像的定位稳定性-S-I-I-i" class="headerlink" title="4. 计算整张图像的定位稳定性 $S_I(I_i)$"></a>4. 计算整张图像的定位稳定性 $S_I(I_i)$</h5><p>一张图上可能会有多个参考框 $B^j_0$（记为 $j &#x3D; 1, 2, \dots, M$），作者希望得到“整张图片对噪声的总体稳定度”。做法是：</p>
+<ol>
+<li><p>为每个参考框计算出它的“最大分类概率” $P_{\max}\bigl(B^j_0\bigr)$。这一概率代表模型对该框是什么类别的<strong>最强置信度</strong>。</p>
+</li>
+<li><p>作者认为：对那些置信度非常高的框（说明模型很确信这里就是个目标），更要看它在定位上的稳定性。如果模型“类很确定”却在加噪后位置飘来飘去，也表明这个框不够“稳”。</p>
+</li>
+<li><p>因此，最终就用一个<strong>加权平均</strong>的方式，把所有参考框的稳定性 $S_B(B^j_0)$ 汇总到图像层面上：<br> $$S_I\bigl(I_i\bigr) &#x3D; \frac{ \sum_{j&#x3D;1}^{M} P_{\max}\bigl(B^j_0\bigr), S_B\bigl(B^j_0\bigr) }{ \sum_{j&#x3D;1}^{M} P_{\max}\bigl(B^j_0\bigr) }$$</p>
+</li>
+</ol>
+<ul>
+<li>分子是“所有框的稳定性乘以相应置信度”再求和，分母是“所有框的置信度和”。</li>
+<li><strong>若某个框非常置信 ( $P_{\max}\approx1$ )，它对整张图的稳定性贡献权重就更大</strong>。</li>
+<li><strong>若某个框置信度本来就低 ( $P_{\max}\approx0$ )，它对整体图像稳定性影响较小</strong>，因为模型本来也“不太确定这是不是前景”。</li>
+</ul>
+<hr>
+<h5 id="5-这个指标在主动学习中的作用"><a href="#5-这个指标在主动学习中的作用" class="headerlink" title="5. 这个指标在主动学习中的作用"></a>5. 这个指标在主动学习中的作用</h5><p>整张图像的最终稳定性 $S_I(I_i)$ 越高，代表模型对该图“定位很稳”且“自信度高的那些框也都不怎么变动”：</p>
+<ul>
+<li><strong>对主动学习来说</strong>，这意味着模型已经对这张未标注图“学得比较透”，不需要花太多精力再去标注它。</li>
+<li><strong>相反</strong>，如果$S_I(I_i)$ 很低，说明一旦加入噪声，定位结果就变化很大或不稳定，模型对这个图依然存在很大不确定性或对目标边界学习不够好，就需要优先把这张图送去人工标注，以提升整体模型的鲁棒性。</li>
+</ul>
+<hr>
+<h5 id="6-小结-1"><a href="#6-小结-1" class="headerlink" title="6. 小结"></a>6. 小结</h5><ol>
+<li><strong>思路概括</strong><ul>
+<li>原图输出检测框 → 每个框作为参考框 → 向图像注入不同强度噪声并重新检测 → 找到参考框对应的噪声检测框 → 计算 IoU → 取平均得到单框稳定性 → 再用分类置信度加权汇总到整图上。</li>
+</ul>
+</li>
+<li><strong>优点</strong><ul>
+<li>可以在无标注数据上，通过加噪来间接评估模型在“定位”环节的可靠程度。</li>
+<li>有利于在主动学习中快速挑出“定位不稳定”的图像进行标注。</li>
+</ul>
+</li>
+<li><strong>局限性</strong><ul>
+<li>依赖于特定的噪声形式（高斯噪声），且只考察“加噪”这种干扰方式，可能跟真实场景的干扰不完全一致。</li>
+<li>需要为每张图多次推理（对各噪声等级都要跑检测），计算开销会增加。</li>
+</ul>
+</li>
+</ol>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%93%9A%E7%A0%94%E7%A9%B6%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">📚研究背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%8E%AF%E4%B8%BB%E8%A6%81%E8%B4%A1%E7%8C%AE"><span class="toc-number">2.</span> <span class="toc-text">🎯主要贡献</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%8D%8D%E6%8A%80%E6%9C%AF%E7%BB%86%E8%8A%82"><span class="toc-number">3.</span> <span class="toc-text">🍍技术细节</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%8D%93%E5%AE%9A%E4%BD%8D%E7%B4%A7%E5%AF%86%E5%BA%A6"><span class="toc-number">3.1.</span> <span class="toc-text">🍓定位紧密度</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF-Localization-Tightness-LT"><span class="toc-number">3.1.1.</span> <span class="toc-text">1. 什么是 Localization Tightness (LT)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8-Region-Proposal-%E6%9D%A5%E4%BC%B0%E8%AE%A1-Tightness"><span class="toc-number">3.1.2.</span> <span class="toc-text">2. 为什么用 Region Proposal 来估计 Tightness</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E5%A6%82%E4%BD%95%E5%AE%9A%E4%B9%89%E4%BC%B0%E8%AE%A1%E7%9A%84-Tightness"><span class="toc-number">3.1.3.</span> <span class="toc-text">3. 如何定义估计的 Tightness</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E5%B0%86-Tightness-%E5%92%8C%E5%88%86%E7%B1%BB%E7%BD%AE%E4%BF%A1%E5%BA%A6%E7%BB%93%E5%90%88"><span class="toc-number">3.1.4.</span> <span class="toc-text">4. 将 Tightness 和分类置信度结合</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-%E5%A6%82%E4%BD%95%E9%92%88%E5%AF%B9%E4%B8%80%E5%BC%A0%E5%9B%BE%E5%83%8F%E8%AE%A1%E7%AE%97%E6%9C%80%E7%BB%88%E5%88%86%E6%95%B0"><span class="toc-number">3.1.5.</span> <span class="toc-text">5. 如何针对一张图像计算最终分数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#6-%E5%B0%8F%E7%BB%93"><span class="toc-number">3.1.6.</span> <span class="toc-text">6. 小结</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%8D%93%E5%AE%9A%E4%BD%8D%E7%A8%B3%E5%AE%9A%E6%80%A7"><span class="toc-number">3.2.</span> <span class="toc-text">🍓定位稳定性</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF-Localization-Stability"><span class="toc-number">3.2.1.</span> <span class="toc-text">1. 什么是 Localization Stability</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%8F%82%E8%80%83%E6%A1%86-Reference-Boxes-%E4%B8%8E%E5%99%AA%E5%A3%B0%E7%AD%89%E7%BA%A7"><span class="toc-number">3.2.2.</span> <span class="toc-text">2. 参考框 (Reference Boxes) 与噪声等级</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E8%AE%A1%E7%AE%97%E5%8D%95%E4%B8%AA%E6%A1%86%E7%9A%84%E5%AE%9A%E4%BD%8D%E7%A8%B3%E5%AE%9A%E6%80%A7-S-B-B-j-0"><span class="toc-number">3.2.3.</span> <span class="toc-text">3. 计算单个框的定位稳定性 $S_B(B^j_0)$</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E8%AE%A1%E7%AE%97%E6%95%B4%E5%BC%A0%E5%9B%BE%E5%83%8F%E7%9A%84%E5%AE%9A%E4%BD%8D%E7%A8%B3%E5%AE%9A%E6%80%A7-S-I-I-i"><span class="toc-number">3.2.4.</span> <span class="toc-text">4. 计算整张图像的定位稳定性 $S_I(I_i)$</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-%E8%BF%99%E4%B8%AA%E6%8C%87%E6%A0%87%E5%9C%A8%E4%B8%BB%E5%8A%A8%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">3.2.5.</span> <span class="toc-text">5. 这个指标在主动学习中的作用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#6-%E5%B0%8F%E7%BB%93-1"><span class="toc-number">3.2.6.</span> <span class="toc-text">6. 小结</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/01/17/LT&amp;LS/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/01/17/LT&amp;LS/&text=LT&amp;LS"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/01/17/LT&amp;LS/&title=LT&amp;LS"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/01/17/LT&amp;LS/&is_video=false&description=LT&amp;LS"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=LT&amp;LS&body=Check out this article: http://example.com/2025/01/17/LT&amp;LS/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/01/17/LT&amp;LS/&title=LT&amp;LS"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/01/17/LT&amp;LS/&title=LT&amp;LS"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/01/17/LT&amp;LS/&title=LT&amp;LS"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/01/17/LT&amp;LS/&title=LT&amp;LS"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/01/17/LT&amp;LS/&name=LT&amp;LS&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/01/17/LT&amp;LS/&t=LT&amp;LS"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    wzhuo2022
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="论文标题：Entropic Open-set Active Learning 中文标题：熵增开放集主动学习 作者团队：Johns Hopkins University, Baltimore, MD, USA &amp; DEVCOM Army Research Laboratory, Adelphi, MD, USA 期刊会议：AAAI 时间：2024 代码：bardisafa&#x2F;EOA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EOAL">
+<meta property="og:url" content="http://example.com/2025/01/17/EOAL/index.html">
+<meta property="og:site_name" content="wzhuo2022&#39;s blog">
+<meta property="og:description" content="论文标题：Entropic Open-set Active Learning 中文标题：熵增开放集主动学习 作者团队：Johns Hopkins University, Baltimore, MD, USA &amp; DEVCOM Army Research Laboratory, Adelphi, MD, USA 期刊会议：AAAI 时间：2024 代码：bardisafa&#x2F;EOA">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://d3k7h0r2a6movb.cloudfront.net/image/2024/12/cc291ff81124a714fd661c016a42db6b.png">
+<meta property="article:published_time" content="2025-01-17T04:56:48.427Z">
+<meta property="article:modified_time" content="2025-01-17T05:02:47.844Z">
+<meta property="article:author" content="wzhuo2022">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://d3k7h0r2a6movb.cloudfront.net/image/2024/12/cc291ff81124a714fd661c016a42db6b.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>EOAL</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2025/01/17/LT&LS/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2025/01/17/DivProto/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/01/17/EOAL/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/01/17/EOAL/&text=EOAL"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/01/17/EOAL/&title=EOAL"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/01/17/EOAL/&is_video=false&description=EOAL"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=EOAL&body=Check out this article: http://example.com/2025/01/17/EOAL/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/01/17/EOAL/&title=EOAL"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/01/17/EOAL/&title=EOAL"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/01/17/EOAL/&title=EOAL"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/01/17/EOAL/&title=EOAL"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/01/17/EOAL/&name=EOAL&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/01/17/EOAL/&t=EOAL"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%93%9A%E7%A0%94%E7%A9%B6%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">📚研究背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%8E%AF%E4%B8%BB%E8%A6%81%E8%B4%A1%E7%8C%AE"><span class="toc-number">2.</span> <span class="toc-text">🎯主要贡献</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%8D%8D%E6%8A%80%E6%9C%AF%E7%BB%86%E8%8A%82"><span class="toc-number">3.</span> <span class="toc-text">🍍技术细节</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%8D%93%E9%97%AE%E9%A2%98%E8%AE%BE%E5%AE%9A"><span class="toc-number">3.1.</span> <span class="toc-text">🍓问题设定</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E7%AD%96%E7%95%A5"><span class="toc-number">3.1.1.</span> <span class="toc-text">查询策略</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B"><span class="toc-number">3.1.2.</span> <span class="toc-text">整体流程</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%8D%93Closed-set-Entropy%EF%BC%88%E9%97%AD%E9%9B%86%E7%86%B5%EF%BC%89"><span class="toc-number">3.2.</span> <span class="toc-text">🍓Closed-set Entropy（闭集熵）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E9%97%AD%E9%9B%86%E7%86%B5%EF%BC%88Closed-set-Entropy%EF%BC%89"><span class="toc-number">3.2.1.</span> <span class="toc-text">1. 什么是闭集熵（Closed-set Entropy）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E4%BA%8C%E5%85%83%E5%88%86%E7%B1%BB%E5%99%A8%E7%9A%84%E8%AE%AD%E7%BB%83%EF%BC%88%E9%92%88%E5%AF%B9%E5%B7%B2%E7%9F%A5%E7%B1%BB%E5%88%AB%E6%A0%B7%E6%9C%AC%EF%BC%89"><span class="toc-number">3.2.2.</span> <span class="toc-text">2. 二元分类器的训练（针对已知类别样本）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E5%9C%A8%E6%9C%AA%E7%9F%A5%E6%A0%B7%E6%9C%AC%E4%B8%8A%E6%8B%89%E9%AB%98%E7%86%B5%E5%80%BC%E7%9A%84%E6%8D%9F%E5%A4%B1-L-em"><span class="toc-number">3.2.3.</span> <span class="toc-text">3. 在未知样本上拉高熵值的损失 $L_{em}$</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E5%B0%8F%E7%BB%93"><span class="toc-number">3.2.4.</span> <span class="toc-text">4. 小结</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%8D%93Distance-based-Entropy%EF%BC%88%E5%9F%BA%E4%BA%8E%E8%B7%9D%E7%A6%BB%E7%9A%84%E7%86%B5%EF%BC%89"><span class="toc-number">3.3.</span> <span class="toc-text">🍓Distance-based Entropy（基于距离的熵）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BB%85%E7%94%A8%E9%97%AD%E9%9B%86%E7%86%B5-S-c-%E4%B8%8D%E5%A4%9F"><span class="toc-number">3.3.1.</span> <span class="toc-text">1. 为什么仅用闭集熵 $S_c$ 不够</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%9F%BA%E4%BA%8E%E8%B7%9D%E7%A6%BB%E7%9A%84%E7%86%B5-S-d-%E7%9A%84%E8%AE%A1%E7%AE%97%E6%B5%81%E7%A8%8B"><span class="toc-number">3.3.2.</span> <span class="toc-text">2. 基于距离的熵 $S_d$ 的计算流程</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E8%BF%9B%E4%B8%80%E6%AD%A5%E8%AE%A9%E8%81%9A%E7%B1%BB%E4%B8%AD%E5%BF%83%E6%9B%B4%E5%85%B7%E5%8C%BA%E5%88%86%E6%80%A7%EF%BC%9ATuplet-loss"><span class="toc-number">3.3.3.</span> <span class="toc-text">3. 进一步让聚类中心更具区分性：Tuplet loss</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E5%B0%8F%E7%BB%93-1"><span class="toc-number">3.3.4.</span> <span class="toc-text">4. 小结</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%8D%93%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B"><span class="toc-number">3.4.</span> <span class="toc-text">🍓算法流程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%91%80%E5%A4%8D%E7%8E%B0"><span class="toc-number">4.</span> <span class="toc-text">👀复现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%AF%E8%83%BD%E7%9A%84%E6%8A%A5%E9%94%99%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">4.1.</span> <span class="toc-text">可能的报错及解决方案</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">4.2.</span> <span class="toc-text"></span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        EOAL
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">wzhuo2022</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-17T04:56:48.427Z" class="dt-published" itemprop="datePublished">2025-01-17</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <blockquote>
+<p><strong>论文标题</strong>：Entropic Open-set Active Learning</p>
+<p><strong>中文标题</strong>：熵增开放集主动学习</p>
+<p><strong>作者团队</strong>：<em>Johns Hopkins University, Baltimore, MD, USA</em> &amp; <em>DEVCOM Army Research Laboratory, Adelphi, MD, USA</em></p>
+<p><strong>期刊会议</strong>：AAAI</p>
+<p><strong>时间</strong>：2024</p>
+<p><strong>代码</strong>：<a target="_blank" rel="noopener" href="https://github.com/bardisafa/EOAL">bardisafa&#x2F;EOAL</a></p>
+</blockquote>
+<hr>
+<h3 id="📚研究背景"><a href="#📚研究背景" class="headerlink" title="📚研究背景"></a>📚研究背景</h3><ol>
+<li><p><strong>传统主动学习的局限</strong><br> 在经典（闭集）主动学习中，通常假设所有未标注数据都来自“已知类别”，模型只需要在已知类别之间区分即可。但在实际应用中，<strong>未知类别</strong>往往会出现在未标注数据里，使得闭集假设无法满足真实需求。</p>
+</li>
+<li><p><strong>开放集场景下的挑战</strong><br> 当未标注数据同时包含“已知类别样本”和“未知类别样本”时，如果仍使用传统主动学习策略，很可能：</p>
+<ul>
+<li><strong>把未知类别误认为已知</strong>：造成错误的训练信号；</li>
+<li><strong>无法识别真正的新类别</strong>：降低整体模型在现实环境中的泛化能力。<br>  因此，开放集场景需要新的方法来同时识别并利用“未知类别”，并将它们纳入后续模型更新中。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="🎯主要贡献"><a href="#🎯主要贡献" class="headerlink" title="🎯主要贡献"></a>🎯主要贡献</h3><p><img src="https://d3k7h0r2a6movb.cloudfront.net/image/2024/12/cc291ff81124a714fd661c016a42db6b.png" alt="image.png"></p>
+<ol>
+<li><p><strong>提出“开放集主动学习（Open-set AL）”框架</strong><br> 论文在主动学习流程中，<strong>显式地考虑了未知类别的存在</strong>：</p>
+<ul>
+<li>通过每轮的查询策略，既能标注已知类别样本，也能捕获并识别未知类别样本；</li>
+<li>对未知类别样本统一视为“开放集类 0”，后续积累更多此类样本有助于提高模型对未知的判别能力。</li>
+</ul>
+</li>
+<li><p><strong>闭集熵（Closed-set Entropy）与基于距离的熵（Distance-based Entropy）的结合</strong></p>
+<ul>
+<li><strong>闭集熵 $S_c$</strong>：利用每个已知类别对应的二元分类器（Binary Classifier）输出的置信度来衡量已知类别判别的“不确定性”，从而初步区分已知与未知。</li>
+<li><strong>基于距离的熵 $S_d$</strong>：在活跃未知集 $\mathcal{D}_{AU}$ 上聚类，得到若干未知簇中心后，计算样本到这些簇中心的距离分布，并用信息熵来度量不确定性。<br>  两者结合，能更全面地识别并挑选“最具价值、最可能是未知”的样本进行标注。</li>
+</ul>
+</li>
+<li><p><strong>针对未知样本的专门训练目标</strong></p>
+<ul>
+<li><strong>额外熵损失 $L_{em}$</strong>：鼓励未知样本在二元分类器上输出趋于 0.5 的概率（高熵），避免在已知类别判别器里被误判为已知。</li>
+<li><strong>Tuplet loss</strong>：在活跃未知集上，引入度量学习思路，使相同未知簇内的样本彼此靠近，且与其它簇中心尽量拉开距离，增强未知类的可分性。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="🍍技术细节"><a href="#🍍技术细节" class="headerlink" title="🍍技术细节"></a>🍍技术细节</h3><h4 id="🍓问题设定"><a href="#🍓问题设定" class="headerlink" title="🍓问题设定"></a>🍓问题设定</h4><ol>
+<li><p><strong>已知类别（Known Classes）与未知类别（Unknown Classes）</strong><br> 在开放集环境下，我们关心的分类问题不仅包括已知的 $K$ 个类别（即“known classes”），还要考虑到有一部分“未知类别（unknown classes）”的样本出现在未标注数据集中。</p>
+<ul>
+<li>记已知类别集合为 $K &#x3D; {1, 2, \dots, K}$。</li>
+<li>记未知类别集合为 $U$，且 $K \cap U &#x3D; \emptyset$。</li>
+</ul>
+</li>
+<li><p><strong>数据集划分</strong></p>
+<ul>
+<li><strong>小规模有标注数据集</strong>： $\mathcal{D}<em>L &#x3D; \left{\bigl(x_i^L, y_i^L\bigr)\right}</em>{i&#x3D;1}^{N_L}$，其中样本的标签都来自已知的 KK 个类别。</li>
+<li><strong>大规模无标注数据集</strong>：$\mathcal{D}<em>U &#x3D; \left{\bigl(x_j^U, y_j^U\bigr)\right}</em>{j&#x3D;1}^{N_U}$，其中混有已知类别与未知类别的样本。可写作：<ul>
+<li>已知类别样本：属于集合 $K$。</li>
+<li>未知类别样本：属于集合 $U$。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>开放集主动学习循环（AL Cycle）</strong></p>
+<ul>
+<li>每一轮主动学习会根据一个“查询策略（query strategy）”从 $\mathcal{D}_U$ 中选择一批最值得标注的样本 $X^\text{active}$，并向标注专家（oracle）请求这些样本的真实标签。</li>
+<li>根据标注结果，可把该批样本分为两类：<ul>
+<li><strong>已知类别样本</strong> $X^k$：标签在 $K$ 中。</li>
+<li><strong>未知类别样本</strong> $X^u$：标签不在 $K$ 中，而是视为开放集的“类 0”（即未知类别），论文中称这些样本为“active unknowns”。</li>
+</ul>
+</li>
+<li>对于标成未知类别的样本（$X^u$），会把它们收集到一个“活跃未知集” $\mathcal{D}_{AU}$ 里；对标成已知类别的样本（$X^k$）则并入到有标注数据集中，即更新 $\mathcal{D}_L &#x3D; \mathcal{D}_L \cup X^k$.</li>
+<li>更新后的 $\mathcal{D}_L$ 会用于进一步训练或提升目标模型 $T(\cdot)$ 的性能。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h5 id="查询策略"><a href="#查询策略" class="headerlink" title="查询策略"></a>查询策略</h5><p>在这篇论文&#x2F;方法中，核心是利用<strong>两种熵度量</strong>来区分“已知”与“未知”样本，从而帮助选择最有价值、最有不确定性的样本去标注。因为：</p>
+<ul>
+<li>如果样本非常像已知类别中的某一类，就无需特别关注，它的标注价值相对较小；</li>
+<li>如果样本在已知类别分布之外，或者很可能属于未知类别，那么这个样本对模型来说有很大价值，被选中标注后可以帮助模型更好地辨别未知类别。</li>
+</ul>
+<p>这两种熵度量分别是：</p>
+<ol>
+<li><p><strong>Closed-set Entropy（闭集熵）</strong></p>
+<ul>
+<li>假设针对每个已知类别，都各自训练了一个“二元分类器（Binary Classifier）”，共有 K 个这样的分类器。</li>
+<li>每个样本通过这 K 个二元分类器得到一组输出分数，进而可计算出一个反映“该样本落在已知类别分布中的不确定性”的熵值。</li>
+<li>对于已知类别样本，该熵值通常会比较低；对于未知类别样本，由于它可能不属于任何已知类别，所以其熵值通常比较高。</li>
+</ul>
+</li>
+<li><p><strong>Distance-based Entropy（基于距离的熵）</strong></p>
+<ul>
+<li>这里的想法是：“未知类别的分布”与“已知类别的分布”应该有所区别，特别是当一个样本在特征空间里离已知类别的分布中心比较远时，往往是未知类别的可能性更大。</li>
+<li>为了进行度量，先对活跃未知集 $\mathcal{D}_{AU}$ 中的样本进行聚类，得到若干个聚类中心（这些中心大致可以代表未知类别的分布）。</li>
+<li>然后对于任意一个新样本，计算它与这些聚类中心的距离。距离越远，代表它不属于已有的那些未知类别分布，或者说它本身可能是一个“新的未知类别”或是一个非常异常的点。基于这些距离，再计算出一个熵值，用来衡量该样本在“未知分布”角度下的置信度或不确定性。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h5 id="整体流程"><a href="#整体流程" class="headerlink" title="整体流程"></a>整体流程</h5><p>综上，他们的开放集主动学习大致做法是：</p>
+<ol>
+<li>针对无标注数据里的每个样本，先计算两种熵（Closed-set Entropy 和 Distance-based Entropy）。</li>
+<li>根据熵值大小，挑选最值得标注的一批样本（即最有价值、最不确定的样本）。</li>
+<li>询问专家标注这些样本后，得到已知类别与未知类别的划分，把标出的未知样本加入到 $\mathcal{D}_{AU}$，已知类别样本并入到 $\mathcal{D}_L$。</li>
+<li>利用更新后的数据集来提升分类模型的性能。</li>
+<li>重复上述流程，直至达到所需的标注规模或模型性能。</li>
+</ol>
+<h4 id="🍓Closed-set-Entropy（闭集熵）"><a href="#🍓Closed-set-Entropy（闭集熵）" class="headerlink" title="🍓Closed-set Entropy（闭集熵）"></a>🍓<strong>Closed-set Entropy（闭集熵）</strong></h4><p>下面这部分内容主要阐述了“闭集熵（Closed-set Entropy）”的由来、如何训练用于计算闭集熵的二元分类器（$G_i(\cdot)$），以及在开放集场景下，为了让未知类别（unknown samples）在这些二元分类器输出中呈现高不确定性，作者又如何在$\mathcal{D}<em>{AU}$（活跃未知样本集）上加入额外的损失项 $L</em>{em}$ 来“拉高”其熵值。结合算法流程，可以整体分为以下几个部分来理解。</p>
+<hr>
+<h5 id="1-什么是闭集熵（Closed-set-Entropy）"><a href="#1-什么是闭集熵（Closed-set-Entropy）" class="headerlink" title="1. 什么是闭集熵（Closed-set Entropy）"></a>1. 什么是闭集熵（Closed-set Entropy）</h5><p>给定一张样本图片 $x$，在特征提取器 $F(\cdot)$ 的输出特征基础上，每个已知类别 $i\in{1,\dots,K}$ 都对应有一个“二元分类器” $G_i(\cdot)$。它输出一个概率 $p^i\in(0,1)$，表示“$x$ 属于已知类别 $i$ 的置信度”。作者定义了每个二元分类器的熵（Entropy）为：</p>
+<p>$$H_i(x) ;&#x3D;; -,p^i ,\log\bigl(p^i\bigr);-;\bigl(1 - p^i\bigr),\log\bigl(1 - p^i\bigr)$$</p>
+<p>这是二项分布下常见的熵公式，数值范围在$[0, \log(2)]$ 之间。当 $p^i&#x3D;0$ 或 1 时熵为 0（非常确定），当 $p^i&#x3D;0.5$ 时熵最大为 $\log(2)$（非常不确定）。</p>
+<p>接着，为了得到一个更综合的“闭集熵评分” $S_c(x)$，作者取所有二元分类器熵的平均值：</p>
+<p>$$S_c(x) ;&#x3D;; \frac{1}{K\log{2}};\sum_{i&#x3D;1}^K H_i(x)$$</p>
+<ul>
+<li>对<strong>已知类别</strong>的样本而言，期望其中某个 $G_i$ 输出的 $p^i$ 接近 1（其余 $p^j$ 接近 0），导致该样本的总体熵较低；</li>
+<li>对<strong>未知类别</strong>的样本而言，理想情况下，这些二元分类器对它都应该“不知道该不该归到第 $i$ 类”，从而让所有 $p^i$ 都接近 0.5，导致熵较高。</li>
+</ul>
+<p>因此，$S_c(x)$ 能在一定程度上帮助区分已知与未知样本。</p>
+<hr>
+<h5 id="2-二元分类器的训练（针对已知类别样本）"><a href="#2-二元分类器的训练（针对已知类别样本）" class="headerlink" title="2. 二元分类器的训练（针对已知类别样本）"></a>2. 二元分类器的训练（针对已知类别样本）</h5><p>文中提到，为了拿到每个 $G_i$ 的合理输出，需要<strong>把第 $i$ 个已知类别当作“正类”</strong>，并把“其余 $K-1$ 个类别”当作“负类”来训练（当然还包含一些未知样本也算“负”）。令</p>
+<ul>
+<li>$\mathcal{D}_L$ 为已知类别数据集，包含 $N_L$ 个带标签的已知类别样本；</li>
+<li>$y_i^L \in {1,\dots,K}$ 是样本所属的真实类别。</li>
+</ul>
+<p>对于第 $i$ 个分类器 $G_i$，作者使用一种“改进的二元交叉熵损失”来训练，形式上类似于</p>
+<p>$$L_{bce} ;&#x3D;; \frac{1}{n_l} \sum_{(x,y) \in \mathcal{D}<em>L} \Bigl[-,\log\bigl(p^i\bigr);-;\min</em>{j\neq y_i}!\bigl(\log\bigl(1 - p^j\bigr)\bigr)\Bigr]$$</p>
+<p>这里做了特别处理（例如只更新某些负例边界）来减轻负样本数过多导致的偏差。直观来说：</p>
+<ul>
+<li>若 $(x,y)$ 属于类别 $i$，希望 $p^i\approx 1$，令 $-\log(p^i)$ 这一项尽量小；</li>
+<li>对于其他类别 $j$ ，若$p^j$接近1，则$log(1-p^j)$很小，此处首先筛选 $p^j$ 最大的 $j$ ，即模型认为最可能的负类。由于加了负号，我们希望这个最小值逐渐增大，即让所有的$log(1-p^j)$不至于太小，尤其是最大的 $p^j$ ，即最终旨在降低 $p^j$ ，鼓励模型在其他类别上具有较低的概率。</li>
+<li><strong>找到对模型而言“最接近”或最容易混淆成正类的那个负类，以此为突破口进行重点打压和区分</strong>这样做的好处是避免模型同时针对大量负类平均分散注意力，反而在训练中提高效率，把重心放在正类和它的“最接近对手”之间的决策边界上，最大程度减小正类与最危险负类之间的混淆。这种策略也能减轻由于负类过多带来的不平衡问题。</li>
+</ul>
+<p>这样训练完成后，每个 $G_i$ 就能输出对“是否类别 $i$”的预测概率，从而可以计算出前文介绍的熵 $H_i(x)$。</p>
+<hr>
+<h5 id="3-在未知样本上拉高熵值的损失-L-em"><a href="#3-在未知样本上拉高熵值的损失-L-em" class="headerlink" title="3. 在未知样本上拉高熵值的损失 $L_{em}$"></a>3. 在未知样本上拉高熵值的损失 $L_{em}$</h5><p>仅仅用已知数据 $\mathcal{D}<em>L$ 训练完 $G_i$ 后，对于未知类别的样本，$p^i$ 不一定能自然地收敛到 0.5（也就不一定有高熵）。为了在开放集场景下“强制”所有 $G_i$ 对未知样本输出一个近似 $\frac{1}{2}$ 的中间概率，作者又在“活跃未知”数据集 $\mathcal{D}</em>{AU}$ 上引入一个额外损失项 $L_{em}$：</p>
+<p>$$L_{em} ;&#x3D;; \frac{1}{K \cdot n_{au}} \sum_{x ,\in, \mathcal{D}<em>{AU}} \sum</em>{i&#x3D;1}^K \Bigl(-,\tfrac{1}{2}\log\bigl(p^i\bigr);-;\tfrac{1}{2}\log\bigl(1 - p^i\bigr)\Bigr)$$</p>
+<p>其中 $n_{au} &#x3D; |\mathcal{D}_{AU}|$ 为活跃未知样本数。可以发现，上式正好是在鼓励 $p^i &#x3D; 0.5$，因为当 $p^i &#x3D; 0.5$ 时，$(p^i(1-p^i))$ 取到极小值，且那时熵最大。</p>
+<p>通过在训练中同时最小化 $\mathcal{D}<em>L\cup\mathcal{D}</em>{AU}$ 上的整体损失（即$L_{bce}$ + $L_{em}$），模型能在已知类别样本保持低熵，同时在未知类别样本上保持高熵。</p>
+<hr>
+<h5 id="4-小结"><a href="#4-小结" class="headerlink" title="4. 小结"></a>4. 小结</h5><ul>
+<li><strong>闭集熵（$S_c$）</strong>：由对已知类别的二元分类器得到的平均熵，用于衡量“这个样本对已知类别的归属究竟有多大不确定性”。</li>
+<li><strong>训练细节</strong>：<ol>
+<li>对<strong>已知类别</strong>样本，用“改进后的二元交叉熵”训练 $G_i$，让已知类别各自对应一个“正&#x2F;负”判别器；</li>
+<li>对<strong>未知类别</strong>样本，用额外的 $L_{em}$ 使模型在未知类别上输出接近 0.5 的概率，形成高熵输出。</li>
+</ol>
+</li>
+</ul>
+<p>这样，既能保证模型对已知类别具有足够的判别能力，也能在遇到未知类别时保持高不确定度，从而更好地进行开放集下的主动学习。</p>
+<hr>
+<h4 id="🍓Distance-based-Entropy（基于距离的熵）"><a href="#🍓Distance-based-Entropy（基于距离的熵）" class="headerlink" title="🍓Distance-based Entropy（基于距离的熵）"></a>🍓Distance-based Entropy（基于距离的熵）</h4><p>下面这一段主要描述了<strong>基于距离的熵（Distance-based Entropy</strong>如何计算，以及它背后希望实现的目标：在特征空间中，能够把“未知类别的样本”与其它类别区分得更明显，从而在主动学习时更准确地区分未知样本。还提出了 <strong>Tuplet loss</strong>，用来鼓励“样本与其聚类中心靠得近、与其他中心拉得远”，从而使得聚类结构更紧致、类间间隔更大。下面分步骤来解释。</p>
+<hr>
+<h5 id="1-为什么仅用闭集熵-S-c-不够"><a href="#1-为什么仅用闭集熵-S-c-不够" class="headerlink" title="1. 为什么仅用闭集熵 $S_c$ 不够"></a>1. 为什么仅用闭集熵 $S_c$ 不够</h5><p>文中先指出：如果只用<strong>闭集熵 $S_c$</strong> 来衡量一个样本是不是未知，可能会被“贴近已知类别分布边缘的未知样本”所欺骗。也就是说，有些未知样本恰好离某个已知类别分布很近，使得对这个样本的预测概率 $p^i$ 并不趋近于 0.5（预期的高熵），导致 $S_c$ 低，进而误判为已知类别。为提高对未知样本的识别能力，需要引入另外一个指标，称为<strong>基于距离的熵 $S_d$</strong>。</p>
+<hr>
+<h5 id="2-基于距离的熵-S-d-的计算流程"><a href="#2-基于距离的熵-S-d-的计算流程" class="headerlink" title="2. 基于距离的熵 $S_d$ 的计算流程"></a>2. 基于距离的熵 $S_d$ 的计算流程</h5><ol>
+<li><p>使用 $\mathcal{D}<em>{AU}$ 进行聚类<br>$\mathcal{D}</em>{AU}$ 包含了已被标为“未知类别”的那些活跃未知样本。虽然它们都属于未知类别，但在特征空间里，可能有不同的分布（例如可能包含多个未知子类）。作者采用了 <strong>FINCH</strong> 聚类算法（或其它类似算法）来对 $\mathcal{D}<em>{AU}$ 做无监督聚类，指定聚成 $K$ 个聚类（与已知类别数相同，虽然并不一定真的对得上，但这样设定方便后续计算熵）。<br>令聚类结果为 ${\hat{y}<em>i}</em>{i&#x3D;1}^{N</em>{AU}}$，其中 $\hat{y}_i \in {1,2,\dots,K}$ 表示第 $i$ 个未知样本所属的聚类标签。</p>
+</li>
+<li><p>计算每个聚类的中心 $c_i$<br>对第 $i$ 个聚类，其中心向量 $c_i$ 定义为该簇内所有样本在特征空间（由 $F(\cdot)$ 提取）上的<strong>平均</strong><br>$$c_i ;&#x3D;; \frac{\sum_{(x,\hat{y})\in \mathcal{D}<em>{AU}} \mathbb{I}[\hat{y}&#x3D;i];F(x)} {\sum</em>{(x,\hat{y})\in \mathcal{D}_{AU}} \mathbb{I}[\hat{y}&#x3D;i]}$$<br>其中，$\mathbb{I}[\hat{y}&#x3D;i]$ 是指示函数，表示样本是否属于第 $i$ 个聚类。</p>
+</li>
+<li><p>计算样本 $x$ 距离各个聚类中心的“概率分布” $q_i(x)$<br>给定一个未标注样本 $x$ 的特征 $F(x)$，定义<br>$$q_i(x) ;&#x3D;; \frac {\exp\Bigl(-|F(x) - c_i|;&#x2F;;T\Bigr)} {\sum_{j&#x3D;1}^K \exp\Bigl(-|F(x) - c_j|;&#x2F;;T\Bigr)}$$<br>其中 $T$ 是一个温度（temperature）超参数，用来控制距离在指数里的缩放。可以把 $q_i(x$) 理解为“$x$ 在特征空间上属于第 $i$ 个聚类中心的‘软分配概率’”，数值越大表示 $x$ 更贴近 $c_i$。</p>
+</li>
+<li><p>最终的距离熵 $S_d(x)$<br>一旦我们得到所有 $q_i(x)$，就可以按信息熵的方式计算：<br>$$S_d(x) ;&#x3D;; -;\frac{1}{\log(K)};\sum_{i&#x3D;1}^{K} q_i(x);\log\bigl(q_i(x)\bigr)$$<br>这里做了一个归一化因子 $\frac{1}{\log(K)}$ 使得 $S_d(x)$ 的取值范围在$[0,1]$ 之间。越接近 1，表示此样本在“离各聚类中心都比较远&#x2F;不确定到底该归在哪个中心”，从而熵高；而如果 $x$ 明显地贴近第i个聚类中心，$q_i(x)$ 接近 1，$q_j(x),where j \neq i$接近0，则该熵值会更小。</p>
+<p><strong>解释</strong>：</p>
+<ul>
+<li>对<strong>已知类别样本</strong>而言，如果它确实跟未知簇分布相差大，那么它与所有未知簇中心的距离都比较大，反而会导致 $q_i(x)$ 比较平均，从而 $S_d(x)$ 较高；</li>
+<li>对<strong>未知类别样本</strong>而言，如果它离某一个（或几个）未知簇中心比较近，那它对这些簇的概率会更集中，$S_d(x)$ 就较低。</li>
+</ul>
+<p>这样，在主动学习中，就可以根据 $S_c$ 和 $S_d$ 来综合判断某个样本是不是值得“怀疑是未知类别”，从而把它选出来标注。</p>
+</li>
+</ol>
+<hr>
+<h5 id="3-进一步让聚类中心更具区分性：Tuplet-loss"><a href="#3-进一步让聚类中心更具区分性：Tuplet-loss" class="headerlink" title="3. 进一步让聚类中心更具区分性：Tuplet loss"></a>3. 进一步让聚类中心更具区分性：Tuplet loss</h5><p>作者还提到，使用<strong>交叉熵</strong>来训练特征提取器 $F(\cdot)$ 时，一般是针对已知类别；但对未知类别的内部结构，并没有显式约束。为让未知样本在特征空间里能“朝着自己的聚类中心靠拢，同时与其他中心远离”，作者在 $\mathcal{D}_{AU}$ 上引入了一个称为 <strong>Tuplet loss</strong> (有点类似于对比损失&#x2F;度量学习的思路)。它的形式为：</p>
+<p>$$L_t ;&#x3D;; \frac{1}{n_{au}} \sum_{x ,\in, \mathcal{D}<em>{AU}} \log\Bigl(,1 + \sum</em>{j\neq \hat{y}} \exp\bigl(D_{\hat{y}} - D_j\bigr)\Bigr) ;+;\beta , D_{\hat{y}}$$</p>
+<p>其中</p>
+<ul>
+<li>$D_i &#x3D; |F(x) - c_i|$ 表示样本 $x$ 与第 $i$ 个聚类中心 $c_i$ 的欧式距离；</li>
+<li>$\hat{y}$ 是样本 $x$ 的聚类标签（即它属于第 $\hat{y}$ 簇）；</li>
+<li>通过 $\exp(D_{\hat{y}} - D_j)$ 这项，把“自己所在簇的距离”与“其他簇的距离”联系起来，鼓励 $D_j &gt; D_{\hat{y}}$，离其他中心远、离自己中心近；</li>
+<li>$\beta ,D_{\hat{y}}$ 这项鼓励<strong>自身与所属簇中心保持低距离</strong>。</li>
+</ul>
+<p><strong>直观含义</strong>：</p>
+<ol>
+<li>让 $x$ 距自己的中心 $c_{\hat{y}}$ 更近，保证类内的紧凑；</li>
+<li>同时让它与其它中心 $c_j$ 的距离更大，以拉开不同未知子类的间隔。</li>
+</ol>
+<p>这样做的结果就是：未知类别在特征空间里可以出现更清晰的聚类结构，也就更有利于后续利用 $S_d$ 来进行熵计算和样本选择。</p>
+<hr>
+<h5 id="4-小结-1"><a href="#4-小结-1" class="headerlink" title="4. 小结"></a>4. 小结</h5><ul>
+<li><strong>Distance-based Entropy ($S_d$)</strong>：先对活跃未知集 $\mathcal{D}_{AU}$ 做无监督聚类，得到 $K$ 个聚类中心。对于任何样本 $x$，计算它对各个中心的“归属概率” $q_i(x)$，再用信息熵公式得到 $S_d(x)$。<ul>
+<li>如果 $x$ 离某个未知簇中心很近，则 $S_d(x)$ 较低；</li>
+<li>如果 $x$ 离所有未知簇都远，则 $S_d(x)$ 较高。</li>
+<li>对于已知类别样本，由于它跟未知簇的中心大多距离较远，就会使它的 $S_d$ 值较高；而对于“自成一派”的未知样本，会降低它的 $S_d$ 值，从而更容易被挑选出来做标注。</li>
+</ul>
+</li>
+<li><strong>Tuplet loss</strong>：进一步强化聚类结构，让“同一个未知簇内的点互相靠近，不同未知簇彼此远离”，提高了 $\mathcal{D}_{AU}$ 中的特征可分性。</li>
+</ul>
+<hr>
+<h4 id="🍓算法流程"><a href="#🍓算法流程" class="headerlink" title="🍓算法流程"></a>🍓算法流程</h4><p>最后，论文给出了一个开放集主动学习的整体流程（Algorithm 1）。核心步骤简述如下：</p>
+<ol>
+<li><p><strong>初始化</strong></p>
+<ul>
+<li>$\mathcal{D}_L$：已标注的已知类别数据</li>
+<li>$\mathcal{D}_U$：未标注数据（混合已知&#x2F;未知）</li>
+<li>$\mathcal{D}_{AU} &#x3D; \varnothing$：活跃未知集最开始为空</li>
+<li>训练&#x2F;更新模型 $F, C, {G_i}_{i&#x3D;1}^K$ 及目标模型 $T$ 等</li>
+</ul>
+</li>
+<li><p><strong>循环每一轮主动学习（AL cycle）</strong></p>
+<ul>
+<li>若 $\mathcal{D}_{AU}$ 不空，则使用它来计算距离中心、更新“基于距离的熵”分数 $S_d(x)$。</li>
+<li>计算所有 $\mathcal{D}_U$ 中未标注样本的闭集熵 $S_c(x)$。</li>
+<li>为了<strong>兼顾多样性</strong>（diversity），会先对 $\mathcal{D}_U$ 的特征做聚类，然后在每个聚类里根据 $S_c(x)$ 或者 $(S_c(x) - S_d(x))$ 之类的排序，选出不确定性最高或最有代表性的样本若干个（合计 $b$ 个，$b$ 为标注预算）。</li>
+<li>将这些样本拿去标注：<ul>
+<li>标注后属于已知类别者 $\to X^k$；</li>
+<li>标注后属于未知类别者 $\to X^u$。</li>
+</ul>
+</li>
+<li>更新数据集：<ul>
+<li>$\mathcal{D}_L \leftarrow \mathcal{D}_L \cup X^k$</li>
+<li>$\mathcal{D}<em>{AU} \leftarrow \mathcal{D}</em>{AU} \cup X^u$</li>
+<li>$\mathcal{D}_U \leftarrow \mathcal{D}<em>U \setminus X</em>\text{active}$</li>
+</ul>
+</li>
+<li>使用更新后的 $\mathcal{D}<em>L$ 继续训练模型 $T$，并可结合 $\mathcal{D}</em>{AU}$ 上的 $L_{em}$ 重新训练各 $G_i$ 等。</li>
+</ul>
+</li>
+<li><p><strong>迭代多轮</strong></p>
+<ul>
+<li>每一轮都会挑选新一批最有价值的样本，不断扩充对已知类别的理解，同时累积“未知类别”样本来帮助模型在判别未知类别时保持高熵、低置信度。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="👀复现"><a href="#👀复现" class="headerlink" title="👀复现"></a>👀复现</h3><h4 id="可能的报错及解决方案"><a href="#可能的报错及解决方案" class="headerlink" title="可能的报错及解决方案"></a>可能的报错及解决方案</h4><p>❌错误1</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;main.py&quot;</span>, line 354, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    main()</span><br><span class="line">  File <span class="string">&quot;main.py&quot;</span>, line 143, <span class="keyword">in</span> main</span><br><span class="line">    trainloader_A, invalidList, use_gpu, dataset.num_classes, epoch, knownclass)</span><br><span class="line">  File <span class="string">&quot;main.py&quot;</span>, line 255, <span class="keyword">in</span> train_A</span><br><span class="line">    <span class="keyword">for</span> batch_idx, (index, (data, labels)) <span class="keyword">in</span> enumerate(trainloader):</span><br><span class="line">ValueError: too many values to unpack (expected 2)</span><br></pre></td></tr></table></figure>
+
+<p>😊解决方法：<br>找到<code>torch.util.data.Dataloader</code>的源码，修改<code>_SingleProcessDataLoaderIter</code>类的<code>_next_data</code>方法的返回值为<code>return index, data</code></p>
+<hr>
+<p>❌错误2</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TypeError: unhashable <span class="built_in">type</span>: <span class="string">&#x27;numpy.ndarray&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>作者的代码关于S_c的计算并没有更新到最终版，目前的代码里并没有进行计算，导致这里输出的并不是熵分数列表，自然地，形状也对不上，所以报错</p>
+<p>😊解决方法：<br>找到<code>query_strategires.py</code>中的<code>eoal_sampling</code>方法,将对应部分修改为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">####### closed-set entropy score</span></span><br><span class="line">entropy_data = open_entropy(out_open)  <span class="comment"># 对out_open进行softmax操作，得到每个样本对每个num_classes的预测概率</span></span><br><span class="line"><span class="comment"># 计算熵</span></span><br><span class="line">entropy_data = entropy_data.clamp(<span class="built_in">min</span>=<span class="number">1e-20</span>, <span class="built_in">max</span>=<span class="number">1</span>-<span class="number">1e-20</span>)</span><br><span class="line">H = -entropy_data*torch.log(entropy_data) - (<span class="number">1</span>-entropy_data)*torch.log(<span class="number">1</span>-entropy_data)</span><br><span class="line">H_sum = torch.<span class="built_in">sum</span>(H, dim=<span class="number">1</span>)     <span class="comment"># [batch_size, 2]</span></span><br><span class="line">entropy_score = H_sum.<span class="built_in">sum</span>(dim=<span class="number">1</span>) / args.known_class  <span class="comment"># [batch_size]</span></span><br><span class="line">entropy_list.append(entropy_score.cpu().data)  <span class="comment"># 将entropy_data的cpu数据添加到entropy_list中</span></span><br></pre></td></tr></table></figure>
+
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%93%9A%E7%A0%94%E7%A9%B6%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">📚研究背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%8E%AF%E4%B8%BB%E8%A6%81%E8%B4%A1%E7%8C%AE"><span class="toc-number">2.</span> <span class="toc-text">🎯主要贡献</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%8D%8D%E6%8A%80%E6%9C%AF%E7%BB%86%E8%8A%82"><span class="toc-number">3.</span> <span class="toc-text">🍍技术细节</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%8D%93%E9%97%AE%E9%A2%98%E8%AE%BE%E5%AE%9A"><span class="toc-number">3.1.</span> <span class="toc-text">🍓问题设定</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E7%AD%96%E7%95%A5"><span class="toc-number">3.1.1.</span> <span class="toc-text">查询策略</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B"><span class="toc-number">3.1.2.</span> <span class="toc-text">整体流程</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%8D%93Closed-set-Entropy%EF%BC%88%E9%97%AD%E9%9B%86%E7%86%B5%EF%BC%89"><span class="toc-number">3.2.</span> <span class="toc-text">🍓Closed-set Entropy（闭集熵）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E9%97%AD%E9%9B%86%E7%86%B5%EF%BC%88Closed-set-Entropy%EF%BC%89"><span class="toc-number">3.2.1.</span> <span class="toc-text">1. 什么是闭集熵（Closed-set Entropy）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E4%BA%8C%E5%85%83%E5%88%86%E7%B1%BB%E5%99%A8%E7%9A%84%E8%AE%AD%E7%BB%83%EF%BC%88%E9%92%88%E5%AF%B9%E5%B7%B2%E7%9F%A5%E7%B1%BB%E5%88%AB%E6%A0%B7%E6%9C%AC%EF%BC%89"><span class="toc-number">3.2.2.</span> <span class="toc-text">2. 二元分类器的训练（针对已知类别样本）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E5%9C%A8%E6%9C%AA%E7%9F%A5%E6%A0%B7%E6%9C%AC%E4%B8%8A%E6%8B%89%E9%AB%98%E7%86%B5%E5%80%BC%E7%9A%84%E6%8D%9F%E5%A4%B1-L-em"><span class="toc-number">3.2.3.</span> <span class="toc-text">3. 在未知样本上拉高熵值的损失 $L_{em}$</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E5%B0%8F%E7%BB%93"><span class="toc-number">3.2.4.</span> <span class="toc-text">4. 小结</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%8D%93Distance-based-Entropy%EF%BC%88%E5%9F%BA%E4%BA%8E%E8%B7%9D%E7%A6%BB%E7%9A%84%E7%86%B5%EF%BC%89"><span class="toc-number">3.3.</span> <span class="toc-text">🍓Distance-based Entropy（基于距离的熵）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BB%85%E7%94%A8%E9%97%AD%E9%9B%86%E7%86%B5-S-c-%E4%B8%8D%E5%A4%9F"><span class="toc-number">3.3.1.</span> <span class="toc-text">1. 为什么仅用闭集熵 $S_c$ 不够</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%9F%BA%E4%BA%8E%E8%B7%9D%E7%A6%BB%E7%9A%84%E7%86%B5-S-d-%E7%9A%84%E8%AE%A1%E7%AE%97%E6%B5%81%E7%A8%8B"><span class="toc-number">3.3.2.</span> <span class="toc-text">2. 基于距离的熵 $S_d$ 的计算流程</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E8%BF%9B%E4%B8%80%E6%AD%A5%E8%AE%A9%E8%81%9A%E7%B1%BB%E4%B8%AD%E5%BF%83%E6%9B%B4%E5%85%B7%E5%8C%BA%E5%88%86%E6%80%A7%EF%BC%9ATuplet-loss"><span class="toc-number">3.3.3.</span> <span class="toc-text">3. 进一步让聚类中心更具区分性：Tuplet loss</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E5%B0%8F%E7%BB%93-1"><span class="toc-number">3.3.4.</span> <span class="toc-text">4. 小结</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%F0%9F%8D%93%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B"><span class="toc-number">3.4.</span> <span class="toc-text">🍓算法流程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%91%80%E5%A4%8D%E7%8E%B0"><span class="toc-number">4.</span> <span class="toc-text">👀复现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%AF%E8%83%BD%E7%9A%84%E6%8A%A5%E9%94%99%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">4.1.</span> <span class="toc-text">可能的报错及解决方案</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">4.2.</span> <span class="toc-text"></span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://example.com/2025/01/17/EOAL/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://example.com/2025/01/17/EOAL/&text=EOAL"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://example.com/2025/01/17/EOAL/&title=EOAL"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://example.com/2025/01/17/EOAL/&is_video=false&description=EOAL"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=EOAL&body=Check out this article: http://example.com/2025/01/17/EOAL/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://example.com/2025/01/17/EOAL/&title=EOAL"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://example.com/2025/01/17/EOAL/&title=EOAL"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://example.com/2025/01/17/EOAL/&title=EOAL"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://example.com/2025/01/17/EOAL/&title=EOAL"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://example.com/2025/01/17/EOAL/&name=EOAL&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://example.com/2025/01/17/EOAL/&t=EOAL"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    wzhuo2022
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
